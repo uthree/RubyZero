@@ -1,5 +1,6 @@
 module RubyZero::NN
     class Parameters
+        attr_reader :elements
         def initialize(*elements)
             @elements = elements
             train
@@ -25,9 +26,11 @@ module RubyZero::NN
         end
         def << (element)
             @elements << element
+            return nil
         end
         def + (other)
-            @elements += other.elements
+            @elements + other.elements
+            return self
         end
     end
 end

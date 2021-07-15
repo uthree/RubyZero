@@ -4,5 +4,6 @@ module RubyZero
     class InvalidArgumentError < Error; end
     class InvalidStateError < Error; end
     class InvalidTypeError < Error; end
-    class InvalidValueError < Error; end
+    class InvaildDimentionError < Error; end
+    class InvaildShapeError < Error; end
 end

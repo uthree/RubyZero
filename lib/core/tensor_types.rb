@@ -21,6 +21,15 @@ module RubyZero
         def self.[]*data
             Tensor.new(data, dtype:self)
         end
+
+        # initialize random tensor
+        def self.rand_norm(shape, mean=0, std=1)
+            Tensor.rand_norm(shape, mean:mean, std:std, dtype:self)
+        end
+        # uniform random
+        def self.rand_uniform(shape, low=-1, high=1)
+            Tensor.rand_uniform(shape, low:low, high:high, dtype:self)
+        end
     end
 
     # Integer types

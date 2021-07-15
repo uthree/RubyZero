@@ -13,6 +13,7 @@ module RubyZero::Functions
         def call(*inputs)
             @inputs = inputs
             output = forward(*inputs)
+            #p self.class, inputs.map{|t| t.require_grad}
             if @inputs.all?{|t| t.require_grad}
                 output.grad_fn = self
             end

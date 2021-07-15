@@ -1,8 +1,8 @@
 module RubyZero
     class Tensor
         attr_reader :xm, :dtype
-        attr_accessor :data, :grad, :require_grad, :grad_fn, :generation
-        def initialize(data, require_grad:true, grad:nil, generation:0, xm:Numo, dtype:nil)
+        attr_accessor :data, :grad, :require_grad, :grad_fn, :generation, :trainable
+        def initialize(data, require_grad:true, grad:nil, generation:0, xm:Numo, dtype:nil, traineble:false)
             if data.is_a? xm::NArray # NArray系列の場合はそのままデータに代入
                 @data = data
             elsif data.is_a?(Array) # 配列の場合はNumo::NArrayに変換
@@ -29,6 +29,11 @@ module RubyZero
             @grad = nil
             @generation = generation
             @require_grad = require_grad
+            @trainable = trainable
+        end
+
+        def trainable?
+            return @trainable
         end
 
         # 勾配を追加する
@@ -36,6 +41,10 @@ module RubyZero
             @grad ||= zeros_like
             @grad.require_grad = require_grad
             @grad += other_tensor
+        end
+
+        def init_gradients()
+            @grad = zeros_like
         end
 
         # dtypeを更新する。
@@ -90,6 +99,24 @@ module RubyZero
         # 総和
         def sum(axis:0)
             return Functions::Sum.new(axis).call(self)
+        end
+
+        #行列積
+        def dot(other)
+            raise InvaildShapeError, "shape mismatch" if shape[1] != other.shape[0]
+            raise InvaildDimentionError, "both tensor of #{self.class}.dot(other) must be ndim=2" if ndim != 2 or other.ndim != 2
+            return Functions::MatMul.new.call(self, other)
+        end
+
+        #flatten 
+        def flatten(start_axis:0, end_axis:1)
+            sa = [start_axis-1, 0].max
+            ea = [end_axis+1, 0].min
+            new_shape = [shape[start_axis..end_axis].reduce(&:*)]
+            new_shape = new_shape[0..sa] + new_shape if sa > 0
+            new_shape = new_shape + new_shape[ea..-1] if ea < shape.size-2
+            p new_shape
+            reshape(*new_shape)
         end
 
         def inspect

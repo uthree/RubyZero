@@ -1,4 +1,4 @@
-require "numo/narray"
+require "numo/narray" unless defined?(Numo)
 
 Dir[File.expand_path('../core/', __FILE__) << '/*.rb'].each do |file|
     require file
@@ -8,10 +8,15 @@ Dir[File.expand_path('../functions/', __FILE__) << '/*.rb'].each do |file|
     require file
 end
 
-Dir[File.expand_path('../optimizers/', __FILE__) << '/*.rb'].each do |file|
+
+Dir[File.expand_path('../nn/', __FILE__) << '/*.rb'].each do |file|
     require file
 end
 
-Dir[File.expand_path('../nn/', __FILE__) << '/*.rb'].each do |file|
+Dir[File.expand_path('../losses/', __FILE__) << '/*.rb'].each do |file|
+    require file
+end
+
+Dir[File.expand_path('../optimizers/', __FILE__) << '/*.rb'].each do |file|
     require file
 end

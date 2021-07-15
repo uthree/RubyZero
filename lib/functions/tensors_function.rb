@@ -5,10 +5,12 @@ module RubyZero::Functions
         end
         def forward(x)
             @old_shape = x.shape
-            x.data.reshape(*@shape)
-            return Tensor.new(x)
+            data = x.data.reshape(*@shape)
+            return Tensor.new(data)
         end
         def backward(dy)
+            p @old_shape
+            P dy.shape
             data = dy.data.reshape(*@old_shape)
             return [Tensor.new(data)]
         end
@@ -66,6 +68,7 @@ module RubyZero::Functions
         end
     end
 
+    # sum
     class Sum < Function
         def initialize(axis)
             @axis = axis
@@ -77,6 +80,22 @@ module RubyZero::Functions
         end
         def backward(dy)
             return [ dy.repeat(@repeats, axis: @axis) ]
+        end
+    end
+
+    # a.dot b
+    class MatMul < Function
+        def forward(a, b)
+            data = a.data.dot(b.data)
+            return Tensor.new(data)
+        end
+        def backward(dy)
+            a,b = @inputs[0], @inputs[1]
+            da = dy.data.dot(b.data.swapaxes(1,0))
+            db = a.data.swapaxes(1,0).dot(dy.data)
+            da = Tensor.new(da)
+            db = Tensor.new(db)
+            return [da, db]
         end
     end
 end
