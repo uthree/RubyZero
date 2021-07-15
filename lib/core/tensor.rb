@@ -82,9 +82,14 @@ module RubyZero
 
         def repeat(repeats, axis:0)
             # どの軸にもRepeatできるように拡張したもの
-            shape=self.shape.dup.insert(0, repeats)
+            shape=self.shape.dup.insert(axis, repeats)
             target_shape = self.shape.dup.insert(axis, repeats)
             return Functions::RepeatZeroAxis.new(repeats).call(self.swap_axes(axis, 0)).reshape(*target_shape).swap_axes(0, axis)
+        end
+
+        # 総和
+        def sum(axis:0)
+            return Functions::Sum.new(axis).call(self)
         end
 
         def inspect

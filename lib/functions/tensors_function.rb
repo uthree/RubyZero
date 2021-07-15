@@ -8,9 +8,9 @@ module RubyZero::Functions
             x.data.reshape(*@shape)
             return Tensor.new(x)
         end
-        def backward(x)
-            x.data.reshape(*@old_shape)
-            return [Tensor.new(x)]
+        def backward(dy)
+            data = dy.data.reshape(*@old_shape)
+            return [Tensor.new(data)]
         end
     end
 
@@ -22,8 +22,8 @@ module RubyZero::Functions
             data = x.data.transpose(*@axes)
             return Tensor.new(data)
         end
-        def backward(x)
-            data = x.data.transpose(*@axes)
+        def backward(dy)
+            data = dy.data.transpose(*@axes)
             return [Tensor.new(data)]
         end
     end
@@ -37,8 +37,8 @@ module RubyZero::Functions
             data = x.data.swapaxes(@axis1, @axis2)
             return Tensor.new(data)
         end
-        def backward(x)
-            data = x.data.swapaxes(@axis1, @axis2)
+        def backward(dy)
+            data = dy.data.swapaxes(@axis1, @axis2)
             return [Tensor.new(data)]
         end
     end
@@ -62,9 +62,21 @@ module RubyZero::Functions
         end
 
         def backward(dy)
-            return [ Tensor.new(dy.sum(0)) ]
+            return [ Tensor.new(dy.data.sum(0)) ]
         end
     end
 
-
+    class Sum < Function
+        def initialize(axis)
+            @axis = axis
+        end
+        def forward(x)
+            @repeats = x.shape[@axis]
+            data = x.data.sum(axis:@axis)
+            return Tensor.new(data)
+        end
+        def backward(dy)
+            return [ dy.repeat(@repeats, axis: @axis) ]
+        end
+    end
 end
