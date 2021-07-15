@@ -5,8 +5,9 @@ module RubyZero::Optimizers
             super
         end
         def step()
-            @parameters.elements.each do |tensor|
-                tensor -= @lr * tensor.grad
+            @parameters.elements.map do |tensor|
+                #p "a"
+                tensor.data = tensor.data - @lr * tensor.grad.data
             end
         end
     end

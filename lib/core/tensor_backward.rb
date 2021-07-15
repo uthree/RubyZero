@@ -3,7 +3,7 @@ module RubyZero
         def backward(require_grad: false) # TODO: 再帰所為なので、後でループにする。
             @grad ||= ones_like()
             if @grad_fn
-                p @grad_fn.class
+                #p @grad_fn.class
                 inputs = @grad_fn.inputs
                 grads = @grad_fn.backward(@grad)
                 grads.length.times do |i|

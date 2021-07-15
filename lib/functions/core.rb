@@ -14,7 +14,7 @@ module RubyZero::Functions
             @inputs = inputs
             output = forward(*inputs)
             #p self.class, inputs.map{|t| t.require_grad}
-            if @inputs.all?{|t| t.require_grad}
+            if @inputs.any?{|t| t.require_grad} or true
                 output.grad_fn = self
             end
             @output = output

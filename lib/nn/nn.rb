@@ -43,7 +43,12 @@ module RubyZero::NN
 
             inv.each do |k|
                 child = instance_variable_get(k)
-                @__childlen__ << child if child.is_a?(Module)
+                @__childlen__ << child if child.kind_of?(Module)
+            end
+            
+            @__childlen__.each do |child|
+                #p child
+                @__parameters__ += child.parameters
             end
 
             @__flag_init_update__ = true

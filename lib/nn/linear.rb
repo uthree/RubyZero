@@ -7,7 +7,7 @@ module RubyZero::NN
             @weight.trainable = true
             if bias
                 @bias = FloatTensor.rand_norm([output_size])
-                @bias.trainable=true
+                @bias.trainable = true
             end
             super()
         end

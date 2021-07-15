@@ -28,9 +28,8 @@ module RubyZero::NN
             @elements << element
             return nil
         end
-        def + (other)
-            @elements + other.elements
-            return self
+        def +(other)
+            Parameters.new(*(@elements + other.elements))
         end
     end
 end

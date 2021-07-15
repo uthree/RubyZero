@@ -23,5 +23,7 @@ module RubyZero::Optimizers
                 tensor.init_gradients()
             end
         end
+        alias_method zero_grad, :init_gradients
+        alias_method init_grad, :init_gradients
     end
 end

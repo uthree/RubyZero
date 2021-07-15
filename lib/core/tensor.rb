@@ -2,7 +2,7 @@ module RubyZero
     class Tensor
         attr_reader :xm, :dtype
         attr_accessor :data, :grad, :require_grad, :grad_fn, :generation, :trainable
-        def initialize(data, require_grad:true, grad:nil, generation:0, xm:Numo, dtype:nil, traineble:false)
+        def initialize(data, require_grad:false, grad:nil, generation:0, xm:Numo, dtype:nil, traineble:false)
             if data.is_a? xm::NArray # NArray系列の場合はそのままデータに代入
                 @data = data
             elsif data.is_a?(Array) # 配列の場合はNumo::NArrayに変換
@@ -40,7 +40,7 @@ module RubyZero
         def add_grad(other_tensor, require_grad:false)
             @grad ||= zeros_like
             @grad.require_grad = require_grad
-            @grad += other_tensor
+            @grad.data += other_tensor.data
         end
 
         def init_gradients()
@@ -115,7 +115,7 @@ module RubyZero
             new_shape = [shape[start_axis..end_axis].reduce(&:*)]
             new_shape = new_shape[0..sa] + new_shape if sa > 0
             new_shape = new_shape + new_shape[ea..-1] if ea < shape.size-2
-            p new_shape
+            #p new_shape
             reshape(*new_shape)
         end
 

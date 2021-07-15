@@ -5,13 +5,13 @@ module RubyZero::Functions
         end
         def forward(x)
             @old_shape = x.shape
-            data = x.data.reshape(*@shape)
+            data = x.data.dup.reshape(*@shape)
             return Tensor.new(data)
         end
         def backward(dy)
-            p @old_shape
-            P dy.shape
-            data = dy.data.reshape(*@old_shape)
+            #p @old_shape
+            #p dy.shape
+            data = dy.data.dup.reshape(*@old_shape)
             return [Tensor.new(data)]
         end
     end
@@ -75,11 +75,16 @@ module RubyZero::Functions
         end
         def forward(x)
             @repeats = x.shape[@axis]
+            @pass_mode = x.ndim == 1
             data = x.data.sum(axis:@axis)
             return Tensor.new(data)
         end
         def backward(dy)
-            return [ dy.repeat(@repeats, axis: @axis) ]
+            if @pass_mode
+                return [dy]
+            else
+                return [ dy.repeat(@repeats, axis: @axis) ]
+            end
         end
     end
 

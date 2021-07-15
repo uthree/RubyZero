@@ -10,8 +10,8 @@ input = FloatTensor[
 
 target = FloatTensor[
     [0],
-    [1],
-    [1],
+    [0],
+    [0],
     [0]
 ]
 
@@ -30,18 +30,21 @@ class TwoLP < NN::Module
     end
 end
 
-model = TwoLP.new()
+model = TwoLP.new(mid_units=1)
 optimizer = Optimizers::SGD.new()
 optimizer << model
 criterion = NN::MeanSquaredError.new()
 model.train
 
-num_epochs = 1
+out = nil
+num_epochs = 100
 num_epochs.times do |epoch|
     optimizer.init_gradients
     out = model.call(input)
+
     loss = criterion.call(out, target)
     loss.backward()
     optimizer.step()
-    #p loss
+    puts "loss #{loss.data[0].round(10)}"
 end
+p out.data
