@@ -68,6 +68,25 @@ module RubyZero
             return @data.ndim
         end
 
+        def reshape(*shape)
+            return Functions::ReShape.new(*shape).call(self)
+        end
+
+        def transpose(*axes)
+            return Functions::Transpose.new(*axes).call(self)
+        end
+
+        def swap_axes(*axes)
+            return Functions::SwapAxes.new(*axes).call(self)
+        end
+
+        def repeat(repeats, axis:0)
+            # どの軸にもRepeatできるように拡張したもの
+            shape=self.shape.dup.insert(0, repeats)
+            target_shape = self.shape.dup.insert(axis, repeats)
+            return Functions::RepeatZeroAxis.new(repeats).call(self.swap_axes(axis, 0)).reshape(*target_shape).swap_axes(0, axis)
+        end
+
         def inspect
             return "#< RubyZero::Tensor dtype=#{dtype} shape=#{shape} grad_fn=#{@grad_fn.class} \n (#{@data.inspect})>"
         end

@@ -2,7 +2,6 @@ module RubyZero
     module Functions
 
     end
-    F = Functions # alias
 end
 
 module RubyZero::Functions
