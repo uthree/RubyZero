@@ -16,7 +16,7 @@ target = FloatTensor[
 ]
 
 class TwoLP < NN::Module
-    def initialize(mid_units = 5)
+    def initialize(mid_units = 10)
         @l1 = NN::Linear.new(2,mid_units)
         @f1 = NN::ReLU.new
         @l2 = NN::Linear.new(mid_units,1)
@@ -32,7 +32,7 @@ end
 
 
 
-model = TwoLP.new(mid_units = 50)
+model = TwoLP.new(mid_units = 10)
 criterion = Losses::MeanSquaredError.new
 optimizer = Optimizers::SGD.new(learning_rate=0.01)
 optimizer << model
