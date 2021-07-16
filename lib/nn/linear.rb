@@ -14,8 +14,7 @@ module RubyZero::NN
         def forward(x)
             y = x.dot(@weight)
             if @bias
-                b = @bias.repeat(x.shape[0], axis:0)
-                y += b
+                y += @bias
             end
             return y
         end

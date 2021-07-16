@@ -74,7 +74,11 @@ module RubyZero
         end
 
         def ndim
-            return @data.ndim
+            if @data.ndim == 1 and @data.shape[0] == 1
+                return 0
+            else
+                return @data.ndim
+            end
         end
 
         def reshape(*shape)

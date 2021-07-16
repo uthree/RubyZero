@@ -17,7 +17,7 @@ target = FloatTensor[
 
 
 class TwoLP < NN::Module
-    def initialize(mid_units = 20)
+    def initialize(mid_units = 5)
         @l1 = NN::Linear.new(2,mid_units)
         @f1 = NN::Sigmoid.new
         @l2 = NN::Linear.new(mid_units,1)
