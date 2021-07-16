@@ -29,12 +29,9 @@ class TwoLP < NN::Module
     end
 end
 
-
-
-
-model = TwoLP.new(mid_units = 10)
+model = TwoLP.new(mid_units = 100)
 criterion = Losses::MeanSquaredError.new
-optimizer = Optimizers::SGD.new(learning_rate=0.01)
+optimizer = Optimizers::SGD.new(learning_rate=0.005)
 optimizer << model
 model.train
 

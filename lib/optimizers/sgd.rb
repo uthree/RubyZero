@@ -5,7 +5,7 @@ module RubyZero::Optimizers
             super
         end
         def update_parameter(tensor)
-            tensor.data -= @lr * tensor.grad.data
+            tensor.data -= tensor.grad.data * @lr
             return tensor
         end
     end

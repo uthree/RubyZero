@@ -107,7 +107,7 @@ module RubyZero::Functions
             return Tensor.new(a.data ** 2)
         end
         def backward(dy)
-            dy_data = dy.data / 2
+            dy_data = dy.data * @inputs[0].data * 2
             return [ Tensor.new(dy_data) ]
         end
     end

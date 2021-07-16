@@ -7,10 +7,12 @@ module RubyZero::Losses
         end
         def forward(y, y_pred)
             err = (y - y_pred)
-            err = err * err
+            err = RubyZero::Functions::Square.new().call(err)
+            #p err.data
             while err.ndim > 1
                 err = err.mean()
             end
+            #p err.data
             return err
         end
     end
