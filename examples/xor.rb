@@ -44,7 +44,6 @@ output = nil
     loss = criterion.call(output,target)
     loss.backward
     optimizer.step()
-    p loss.data[0]
 end
 
 p output.data

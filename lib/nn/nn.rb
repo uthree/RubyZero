@@ -29,6 +29,7 @@ module RubyZero::NN
         end
 
         def __update_childlen__()
+            @__parameters__ = Parameters.new
             inv = instance_variables
             inv.delete(:@__parameters__)
             inv.delete(:@__childlen__)
