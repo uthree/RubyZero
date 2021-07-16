@@ -16,6 +16,11 @@ module RubyZero::Optimizers
             @parameters = @parameters + nn_module.parameters
         end
         def step()
+            @parameters.elements.each do |tensor|
+                tensor.data = update_parameter(tensor).data
+            end
+        end
+        def update_parameter(tensor)
 
         end
         def init_gradients()
@@ -23,7 +28,7 @@ module RubyZero::Optimizers
                 tensor.init_gradients()
             end
         end
-        alias_method zero_grad, :init_gradients
-        alias_method init_grad, :init_gradients
+        alias_method :zero_grad, :init_gradients
+        alias_method :init_grad, :init_gradients
     end
 end

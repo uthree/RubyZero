@@ -88,6 +88,28 @@ module RubyZero::Functions
         end
     end
 
+    # mean
+    class Mean < Function
+        def initialize(axis)
+            @axis = axis
+        end
+        def forward(x)
+            @repeats = x.shape[@axis]
+            @pass_mode = x.ndim == 1
+            data = x.data.sum(axis:@axis) / @repeats
+            return Tensor.new(data)
+        end
+        def backward(dy)
+            if @pass_mode
+                return [dy]
+            else
+                dy = dy.repeat(@repeats, axis: @axis)
+                dy_data = dy.data / @repeats
+                return [Tensor.new(dy_data)]
+            end
+        end
+    end
+
     # a.dot b
     class MatMul < Function
         def forward(a, b)

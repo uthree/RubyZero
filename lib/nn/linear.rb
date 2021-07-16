@@ -15,7 +15,6 @@ module RubyZero::NN
             y = x.dot(@weight)
             if @bias
                 b = @bias.repeat(x.shape[0], axis:0)
-                #p x.shape[0], b.shape
                 y += b
             end
             return y

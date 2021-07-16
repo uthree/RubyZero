@@ -100,4 +100,15 @@ module RubyZero::Functions
             return [da, db]
         end
     end
+
+    # a^2
+    class Square < Function
+        def forward(a)
+            return Tensor.new(a.data ** 2)
+        end
+        def backward(dy)
+            dy_data = dy.data / 2
+            return [ Tensor.new(dy_data) ]
+        end
+    end
 end

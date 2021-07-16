@@ -101,6 +101,10 @@ module RubyZero
             return Functions::Sum.new(axis).call(self)
         end
 
+        def mean(axis:0)
+            return Functions::Mean.new(axis).call(self)
+        end
+
         #行列積
         def dot(other)
             raise InvaildShapeError, "shape mismatch" if shape[1] != other.shape[0]
