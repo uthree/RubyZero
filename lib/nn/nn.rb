@@ -1,7 +1,9 @@
+
 module RubyZero
     module NN
 
     end
+
 end
 
 module RubyZero::NN
@@ -61,3 +63,4 @@ module RubyZero::NN
         end
     end
 end
+

@@ -6,8 +6,15 @@ This library is likes [PyTorch](https://github.com/pytorch/pytorch) and [DeZero]
 # Example
 xor neteork
 ```ruby
-require "./lib/ruby_zero.rb"
+require "../lib/ruby_zero.rb"
 include RubyZero
+
+model = NN::Sequential.new
+model << NN::Linear.new(2, 10)
+model << NN::ReLU.new
+model << NN::Linear.new(10, 10)
+model << NN::Sigmoid.new
+model << NN::Linear.new(10, 1)
 
 input = FloatTensor[
     [0,0],
@@ -23,38 +30,19 @@ target = FloatTensor[
     [0]
 ]
 
-class TwoLP < NN::Module
-    def initialize(mid_units = 10)
-        @l1 = NN::Linear.new(2,mid_units)
-        @f1 = NN::ReLU.new
-        @l2 = NN::Linear.new(mid_units,1)
-        super()
-    end
-    def forward(x)
-        x = @f1.call(@l1.call(x))
-        x = @l2.call(x)
-        return x
-    end
-end
-
-model = TwoLP.new(mid_units = 10)
+optimizer = Optimizers::SGD.new(learning_rate:0.001)
 criterion = Losses::MeanSquaredError.new
-optimizer = Optimizers::SGD.new(learning_rate=0.01)
 optimizer << model
-model.train
-
-output = nil
-
-100.times do
-    optimizer.zero_grad()
-    output = model.call(input)
-    loss = criterion.call(output,target)
+1000.times do 
+    optimizer.zero_grad
+    out = model.call(input)
+    loss = criterion.call(out, target)
     loss.backward
-    optimizer.step()
+    optimizer.step
     p loss.data[0]
 end
 
-p output.data
+p model.call(input)
 ```
 
 # Installation

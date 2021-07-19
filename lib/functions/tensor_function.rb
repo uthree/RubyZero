@@ -125,4 +125,20 @@ module RubyZero::Functions
             return [da, db]
         end
     end
+
+    #slice
+    class Slice < Function
+        def initialize(range)
+            @range = range
+        end
+        def forward(a)
+            return Tensor.new(a.data[*@range])
+        end
+        def backward(dy)
+            z = @inputs[0].data.new_zeros
+            dy_data = dy.data
+            z[@range] = dy_data
+            return [Tensor.new(z)]
+        end
+    end
 end

@@ -33,5 +33,10 @@ module RubyZero
         def -@
             return Functions::Neg.new().call(self)
         end
+
+        # slice
+        def [](*args)
+            return Functions::Slice.new(args).call(self)
+        end
     end
 end
