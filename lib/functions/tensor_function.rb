@@ -137,8 +137,34 @@ module RubyZero::Functions
         def backward(dy)
             z = @inputs[0].data.new_zeros
             dy_data = dy.data
-            z[@range] = dy_data
+            z[*@range] = dy_data
             return [Tensor.new(z)]
         end
     end
+
+    class Concatenate < Function
+        def initialize(axis:0)
+            @axis = axis
+        end
+        
+        def forward(a, b)
+            @a_shape = a.shape
+            @b_shape = b.shape
+            data = a.data.concatenate(b.data, axis: @axis)
+            return Tensor.new(data)
+        end
+
+        def backward (dy)
+            len_a = @a_shape[@axis]
+            len_b = @b_shape[@axis]
+            shape_a = Array.new(@a_shape.length, nil)
+            shape_b = Array.new(@b_shape.length, nil)
+            shape_a[@axis] = 0..len_a-1
+            shape_b[@axis] = len_a..len_a+len_b-1
+            da = dy.data[*shape_a]
+            db = dy.data[*shape_b]
+            return [ Tensor.new(da), Tensor.new(db) ]
+        end
+    end
+
 end

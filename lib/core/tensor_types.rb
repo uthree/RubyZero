@@ -30,6 +30,10 @@ module RubyZero
         def self.rand_uniform(shape, low:-1, high:1)
             Tensor.rand_uniform(shape, low:low, high:high, dtype:self)
         end
+        # aliases
+        def self.rand(*args)
+            self.rand_norm(*args)
+        end
     end
 
     # Integer types

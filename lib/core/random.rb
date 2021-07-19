@@ -5,7 +5,7 @@ module RubyZero
             return new data
         end
         def self.rand_uniform(shape, low:-1, high:1, dtype:FloatTensor)
-            data = dtype.get_type_numo.new(*shape).rand_uniform(low, high)
+            data = dtype.get_type_numo.new(*shape).rand(low, high)
             return new data
         end
     end

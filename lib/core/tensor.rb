@@ -118,13 +118,29 @@ module RubyZero
 
         #flatten 
         def flatten(start_axis:0, end_axis:1)
-            sa = [start_axis-1, 0].max
-            ea = [end_axis+1, 0].min
-            new_shape = [shape[start_axis..end_axis].reduce(&:*)]
-            new_shape = new_shape[0..sa] + new_shape if sa > 0
-            new_shape = new_shape + new_shape[ea..-1] if ea < shape.size-2
-            #p new_shape
-            reshape(*new_shape)
+            new_length = self.shape[start_axis..end_axis].reduce(&:*)
+            new_shape = self.shape.dup
+            new_shape.slice!(start_axis..end_axis)
+            new_shape << new_length
+            return self.reshape(*new_shape)
+        end
+
+        #concat
+        def cat(other, axis:0)
+            return Functions::Concatenate.new(axis:axis).call(self, other)
+        end
+
+        # aliases of concatenate
+        alias_method :concat, :cat
+        alias_method :concatenate, :cat
+
+        #stack
+        def self.stack(tensors, axis:0) # TODO: optimze to O(log2(n))
+            first_tensor = tensors.first
+            tensors[1..-1].each do |tensor|
+                first_tensor = first_tensor.cat(tensor, axis:axis)
+            end
+            return first_tensor
         end
 
         def inspect

@@ -50,15 +50,18 @@ module RubyZero::NN
             end
             
             @__childlen__.each do |child|
-                #p child
+                child.__update_childlen__
                 @__parameters__ += child.parameters
             end
 
             @__flag_init_update__ = true
+            return nil
         end
 
         def parameters
             __update_childlen__
+            @__childlen__.uniq!
+            @__parameters__.elements.uniq!
             return @__parameters__
         end
     end

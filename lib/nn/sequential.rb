@@ -31,6 +31,7 @@ module RubyZero::NN
             
             @__childlen__.each do |child|
                 #p child
+                child.__update_childlen__
                 @__parameters__ += child.parameters
             end
 
@@ -38,7 +39,6 @@ module RubyZero::NN
         end
         def <<(other_module)
             @modules << other_module
-            __update_childlen__
             return self
         end
         def modules
@@ -68,7 +68,6 @@ module RubyZero::NN
         end
         def <<(other_module)
             @mods << other_module
-            __update_childlen__
         end
     end
 end
