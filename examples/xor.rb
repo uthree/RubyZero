@@ -32,13 +32,13 @@ end
 
 model = TwoLP.new(mid_units = 10)
 criterion = Losses::MeanSquaredError.new
-optimizer = Optimizers::SGD.new(learning_rate=0.01)
+optimizer = Optimizers::SGD.new(learning_rate:0.01)
 optimizer << model
 model.train
 
 output = nil
 
-1000.times do
+100.times do
     optimizer.zero_grad()
     output = model.call(input)
     loss = criterion.call(output,target)

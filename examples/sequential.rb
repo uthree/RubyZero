@@ -2,11 +2,11 @@ require "../lib/ruby_zero.rb"
 include RubyZero
 
 model = NN::Sequential.new
-model << NN::Linear.new(2, 5)
+model << NN::Linear.new(2, 10)
+model << NN::ReLU.new
+model << NN::Linear.new(10, 10)
 model << NN::Sigmoid.new
-model << NN::Linear.new(5, 5)
-model << NN::Sigmoid.new
-model << NN::Linear.new(5, 1)
+model << NN::Linear.new(10, 1)
 
 input = FloatTensor[
     [0,0],
@@ -35,3 +35,4 @@ optimizer << model
 end
 
 p model.call(input)
+
