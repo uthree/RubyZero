@@ -131,7 +131,7 @@ module RubyZero
         end
 
         #slice
-        def []=(*args)
+        def [](*args)
             return Functions::Slice.new(*args).call(self)
         end
 

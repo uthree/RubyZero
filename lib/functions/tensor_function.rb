@@ -132,7 +132,11 @@ module RubyZero::Functions
             @range = range
         end
         def forward(a)
-            return Tensor.new(a.data[*@range])
+            range = @range
+            while range.size < a.ndim
+                range.push nil
+            end
+            return Tensor.new(a.data[*range])
         end
         def backward(dy)
             z = @inputs[0].data.new_zeros
