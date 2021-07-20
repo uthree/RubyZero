@@ -167,4 +167,23 @@ module RubyZero::Functions
         end
     end
 
+    # tensor[*range]= value
+    class Assign < Function
+        def initialize(range)
+            @range = range
+        end
+
+        def forward(x, value)
+            data = x.data.dup
+            data[*@range] = value
+            return [ Tensor.new(data) ]
+        end
+
+        def backward(dy)
+            z = @inputs[0].data.new_zeros
+            z[*@range] = dy.data
+            return [ Tensor.new(z) ]
+        end
+    end
+
 end

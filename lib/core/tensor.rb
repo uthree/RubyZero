@@ -57,6 +57,20 @@ module RubyZero
             Tensor.new(data)
         end
 
+        # initialize zeros
+        def self.zeros(*shape, dtype)
+            internal_type = dtype.get_type(Numo)
+            data = internal_type.zeros(*shape)
+            return new(data, dtype:dtype)
+        end
+
+        # initialize ones
+        def self.ones(*shape, dtype)
+            internal_type = dtype.get_type(Numo)
+            data = internal_type.ones(*shape)
+            return new(data, dtype:dtype)
+        end
+
         # initialize zeros with same shape
         def zeros_like
             data = self.dtype.get_type(self.xm).zeros(*self.shape)
@@ -115,6 +129,17 @@ module RubyZero
             raise InvaildDimentionError, "both tensor of #{self.class}.dot(other) must be ndim=2" if ndim != 2 or other.ndim != 2
             return Functions::MatMul.new.call(self, other)
         end
+
+        #slice
+        def []=(*args)
+            return Functions::Slice.new(*args).call(self)
+        end
+
+        # assingment with slice
+        def []=(*args,val)
+            return Functions::Assign.new(*args).call(self, val)
+        end
+
 
         #flatten 
         def flatten(start_axis:0, end_axis:1)

@@ -22,6 +22,16 @@ module RubyZero
             Tensor.new(data, dtype:self)
         end
 
+        # initialize zeros
+        def self.zeros(*shape)
+            Tensor.zeros(*shape, self)
+        end
+
+        # initialize ones
+        def self.ones(*shape)
+            Tensor.ones(*shape, self)
+        end
+
         # initialize random tensor
         def self.rand_norm(shape, mean:0, std:1)
             Tensor.rand_norm(shape, mean:mean, std:std, dtype:self)
