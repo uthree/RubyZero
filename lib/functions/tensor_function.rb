@@ -169,14 +169,14 @@ module RubyZero::Functions
 
     # tensor[*range]= value
     class Assign < Function
-        def initialize(range)
+        def initialize(*range)
             @range = range
         end
 
         def forward(x, value)
             data = x.data.dup
-            data[*@range] = value
-            return [ Tensor.new(data) ]
+            data[*@range] = value.data[*@range]
+            return Tensor.new(data)
         end
 
         def backward(dy)

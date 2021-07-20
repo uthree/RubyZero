@@ -58,16 +58,16 @@ module RubyZero
         end
 
         # initialize zeros
-        def self.zeros(*shape, dtype)
+        def self.zeros(shape, dtype)
             internal_type = dtype.get_type(Numo)
-            data = internal_type.zeros(*shape)
+            data = internal_type.zeros(shape)
             return new(data, dtype:dtype)
         end
 
         # initialize ones
-        def self.ones(*shape, dtype)
+        def self.ones(shape, dtype)
             internal_type = dtype.get_type(Numo)
-            data = internal_type.ones(*shape)
+            data = internal_type.ones(shape)
             return new(data, dtype:dtype)
         end
 
@@ -137,7 +137,14 @@ module RubyZero
 
         # assingment with slice
         def []=(*args,val)
-            return Functions::Assign.new(*args).call(self, val)
+            result = Functions::Assign.new(*args).call(self, val)
+            # copy to self
+            @data = result.data
+            @grad = result.grad
+            @require_grad = result.require_grad
+            @grad_fn = result.grad_fn
+            @generation = result.generation
+            return self
         end
 
 

@@ -9,7 +9,12 @@ def padding_1d(x, padding) # x: [batch, width, channels]
     length = x.shape[1]
     padded_len = length + 2 * padding
     new_shape = [x.shape[0], padded_len, x.shape[2]]
-    Tensor.zeros
+    t = Tensor.zeros(new_shape, x.dtype)
+    t[nil, padding-1..length-1, nil] = x
+    return t
 end
 
-p FloatTensor.zeros(1)
+tensor = FloatTensor.rand([3, 5, 2])
+p tensor
+tensor = padding_1d(tensor, 1)
+p tensor
