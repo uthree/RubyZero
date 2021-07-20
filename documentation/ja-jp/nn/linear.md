@@ -7,6 +7,16 @@
 input shape: `[nil, input_units]`
 output shape: `[nil, output_units]`
 
+## 使用例
+```ruby
+linear = RubyZero::NN::Linear(10, 5)
+tensor = RubyZero::FloatTensor.zeros(5, 10)
+linear.train
+output = linear.call(tensor) # forward pass
+output.backward # backward pass
+p output
+```
+
 ## 特異メソッド `self.new(input_units, output_units, bias:true)` `-> RubyZero::NN::Linear`
 
 ### パラメータ input_units : Integer
