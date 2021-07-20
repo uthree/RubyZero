@@ -1,8 +1,4 @@
-# NN モジュール
-
-## 基本
-
-### RubyZero::NN::Module
+# RubyZero::NN::Module
 ニューラルネットワークの基本パーツ。
 
 基本的にクラス継承をして使う。
@@ -13,7 +9,7 @@
 `forward` メソッドをオーバーライドすることで、順伝播処理を記述する。
 順伝播処理を呼び出すときは、`forward`ではなく`call(*args)`または`.(*args)`を使用しなければならない。
 
-#### 使用例
+## 使用例
 ```ruby
 class TwoLP < RubyZero::NN::Module
     def initialize(input_units, mid_units, output_units)
@@ -36,21 +32,16 @@ model = TwoLP.new(2, 10, 1)
 model.call(x)
 ```
 
-#### メソッド Module#call(*args) -> RubyZero::Tensor
+## メソッド Module#call(*args) -> RubyZero::Tensor
 モジュールの順伝播
 
-#### メソッド Module#parameters -> RubyZero::NN::Parameters
+## メソッド Module#parameters -> RubyZero::NN::Parameters
 パラメータを取得
 
-#### メソッド Module#train -> nil
+## メソッド Module#train -> nil
 学習モードへ切り替え。
 通常、学習開始前にこのメソッドを呼び出す。　
 
-#### メソッド Module#eval -> nil
-
-
-### RubyZero::NN::Linear
-
-全結合層
+## メソッド Module#eval -> nil
 
 
