@@ -34,6 +34,7 @@ module RubyZero::NN
             @__childlen__.each do |child|
                 child.eval()
             end
+            return nil
         end
 
         def train()
@@ -43,9 +44,11 @@ module RubyZero::NN
             @__childlen__.each do |child|
                 child.train()
             end
+            return nil
         end
 
         def __update_childlen__()
+            @__childlen__ ||= []
             @__parameters__ = Parameters.new
             inv = instance_variables
             inv.delete(:@__parameters__)

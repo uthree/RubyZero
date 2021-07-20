@@ -144,7 +144,7 @@ module RubyZero
             @require_grad = result.require_grad
             @grad_fn = result.grad_fn
             @generation = result.generation
-            return self
+            return result
         end
 
 
@@ -153,7 +153,7 @@ module RubyZero
             new_length = self.shape[start_axis..end_axis].reduce(&:*)
             new_shape = self.shape.dup
             new_shape.slice!(start_axis..end_axis)
-            new_shape << new_length
+            new_shape.insert(start_axis, new_length)
             return self.reshape(*new_shape)
         end
 
