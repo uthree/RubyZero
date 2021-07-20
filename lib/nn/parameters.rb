@@ -1,6 +1,6 @@
 module RubyZero::NN
     class Parameters
-        attr_reader :elements
+        attr_reader :elements, :mode
         def initialize(*elements)
             @elements = elements
             train

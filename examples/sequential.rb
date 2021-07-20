@@ -22,17 +22,19 @@ target = FloatTensor[
     [0]
 ]
 
-optimizer = Optimizers::SGD.new(learning_rate:0.001)
+optimizer = Optimizers::SGD.new(learning_rate:0.01)
 criterion = Losses::MeanSquaredError.new
 optimizer << model
-1000.times do 
+model.train
+10000.times do 
     optimizer.zero_grad
     out = model.call(input)
     loss = criterion.call(out, target)
     loss.backward
     optimizer.step
-    p loss.data[0]
+    puts "Loss: #{loss.item.round(5)}"
 end
 
+model.eval()
 p model.call(input)
 

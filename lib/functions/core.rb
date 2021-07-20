@@ -13,11 +13,12 @@ module RubyZero::Functions
         def call(*inputs)
             @inputs = inputs
             output = forward(*inputs)
-            #p self.class, inputs.map{|t| t.require_grad}
-            if @inputs.any?{|t| t.require_grad} or true
+            # p self.class, inputs.map{|t| t.require_grad}
+            if @inputs.all?{|t| t.require_grad}
                 output.grad_fn = self
             end
             @output = output
+            @output.require_grad = @inputs.all?{|t| t.require_grad}
             return output
         end
 

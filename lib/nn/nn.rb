@@ -8,14 +8,18 @@ end
 
 module RubyZero::NN
     class Module # template module of neural network
-        attr_reader :__parameters__, :__childlen__
+        attr_reader :__parameters__, :__childlen__, :mode
         def initialize()
             @__parameters__ = Parameters.new
             @__childlen__ = []
             @__flag_init_update__ = false
+            @mode = :train
         end
 
         def call(*args, **kwargs, &block)
+            args.each do |arg|
+                arg.require_grad = true
+            end
             forward(*args, **kwargs, &block)
         end
 
@@ -24,10 +28,21 @@ module RubyZero::NN
         end
 
         def eval()
+            __update_childlen__()
+            @mode = :eval
             @__parameters__.eval
+            @__childlen__.each do |child|
+                child.eval()
+            end
         end
+
         def train()
+            __update_childlen__()
+            @mode = :train
             @__parameters__.train
+            @__childlen__.each do |child|
+                child.train()
+            end
         end
 
         def __update_childlen__()

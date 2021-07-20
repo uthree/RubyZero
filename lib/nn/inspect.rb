@@ -19,7 +19,7 @@ module RubyZero::NN
                 num_param += param.shape.inject(:*)
             end
             n = nest+0.5
-            s += "#{tabs}#{self.class.name} : #{num_param}\n" unless nest == 0
+            s += "#{tabs}#{self.class.name} : #{num_param} #{mode}\n" unless nest == 0
             @__childlen__.each do |child|
                 s += "#{tabs}#{child.__inspect__(n)}"
             end

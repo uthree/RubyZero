@@ -38,6 +38,7 @@ module RubyZero::NN
             @__flag_init_update__ = true
         end
         def <<(other_module)
+            raise InvalidArgumentError, "ModuleList can only accept Module" unless other_module.kind_of?(Module)
             @modules << other_module
             return self
         end

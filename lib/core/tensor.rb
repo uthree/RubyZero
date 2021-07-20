@@ -146,5 +146,13 @@ module RubyZero
         def inspect
             return "#< RubyZero::Tensor dtype=#{dtype} shape=#{shape} grad_fn=#{@grad_fn.class} \n (#{@data.inspect})>"
         end
+
+        def item
+            if ndim == 0
+                return @data[0]
+            else
+                return @data.to_a
+            end
+        end
     end
 end
