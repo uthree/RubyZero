@@ -32,16 +32,18 @@ model = TwoLP.new(2, 10, 1)
 model.call(x)
 ```
 
-## メソッド Module#call(*args) -> RubyZero::Tensor
+## メソッド `Module#call(*args)` -> `RubyZero::Tensor`
 モジュールの順伝播
 
-## メソッド Module#parameters -> RubyZero::NN::Parameters
+## メソッド `Module#parameters` -> `RubyZero::NN::Parameters`
 パラメータを取得
 
-## メソッド Module#train -> nil
+## メソッド `Module#train` -> `nil`
 学習モードへ切り替え。
-通常、学習開始前にこのメソッドを呼び出す。　
+通常、学習開始前にこのメソッドを呼び出す。
+逆伝播の計算グラフが構築され、勾配が計算できる。
 
-## メソッド Module#eval -> nil
-
-
+## メソッド `Module#eval` -> `nil`
+評価モードへ切り替え。推論時に使用する。
+逆伝播の計算グラフが構築されない。
+勾配の計算も不可能。
