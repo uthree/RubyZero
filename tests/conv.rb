@@ -18,8 +18,8 @@ input = Tensor[
 ]
 input.require_grad = true
 
-conv1d = NN::Conv2d.new(1, 1, 3)
-conv1d.train
-out = conv1d.call(input)
+conv2d = NN::Conv2d.new(1, 1, 3)
+conv2d.train
+out = conv2d.call(input)
 out.backward
-p out
+p out.shape

@@ -4,8 +4,11 @@
 数学的にはアフィン変換、`bias:false`で線形変換に相当する処理。
 
 ## shapes
-input shape: `[nil, input_units]`
-output shape: `[nil, output_units]`
+batch_sizeはは任意の実数
+
+input shape: `[batch_size, input_units]`
+
+output shape: `[batch_size, output_units]`
 
 ## 使用例
 ```ruby

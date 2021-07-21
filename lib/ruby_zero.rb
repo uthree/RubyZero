@@ -20,3 +20,7 @@ end
 Dir[File.expand_path('../optimizers/', __FILE__) << '/*.rb'].each do |file|
     require file
 end
+
+Dir[File.expand_path('../data/', __FILE__) << '/*.rb'].each do |file|
+    require file
+end
