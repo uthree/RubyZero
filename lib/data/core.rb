@@ -44,8 +44,14 @@ module RubyZero::Data
                 if @shuffle
                     @indexes = @indexes.shuffle
                 end
-                @indexes.each do |index|
-                    block.call(*(@dataset.get_item(index)))
+                b = (@length.to_f / @batch_size).ceil
+                b.times do |now_batch_num|
+                    batch = get_item_batch(now_batch_num)
+                    new_batch = Array.new(batch[0].length, [])
+                    new_batch.each_with_index do |n, idx|
+                        new_batch[idx] = batch.map{|b| b[idx]}
+                    end
+                    block.call(new_batch)
                 end
             else
                 return Enumerator.new(self, :each, *args)

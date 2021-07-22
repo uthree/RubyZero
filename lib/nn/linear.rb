@@ -13,7 +13,7 @@ module RubyZero::NN
         end
         def forward(x)
             required_input_shape = [x.shape[0], @weight.shape[0]]
-            raise InvaildShapeError, "Input shape must be #{required_input_shape}" unless x.shape == required_input_shape
+            raise InvaildShapeError, "Input shape must be #{required_input_shape} got #{x.shape}" unless x.shape == required_input_shape
             y = x.dot(@weight)
             if @bias
                 y += @bias

@@ -9,7 +9,7 @@ module RubyZero::Losses
             err = (y - y_pred)
             err = RubyZero::Functions::Square.new().call(err)
             #p err.data
-            while err.ndim > 1
+            while err.ndim > 0
                 err = err.mean()
             end
             #p err.data
