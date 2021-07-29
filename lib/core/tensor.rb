@@ -20,7 +20,7 @@ module RubyZero
             elsif data.is_a?(Complex) # 複素数の場合はNumo::NArrayに変換
                 @data = xm::NArray[data]
             else # 変換できないのでエラーにする
-                raise InvalidValueError, "unsupported type #{data.class} for #{self.class}"
+                raise TypeError, "unsupported type #{data.class} for #{self.class}"
             end
             
             @xm = xm
@@ -30,6 +30,10 @@ module RubyZero
             @generation = generation
             @require_grad = require_grad
             @trainable = trainable
+        end
+
+        def id
+            return object_id
         end
 
         def trainable?

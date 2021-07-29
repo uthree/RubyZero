@@ -112,4 +112,15 @@ module RubyZero::Functions
             return [ Tensor.new(dy_data) ]
         end
     end
+
+    # a.abs
+    class Absolute
+        def forward(a)
+            return Tensor.new(a.data.abs)
+        end
+        def backward(dy)
+            return [dy * @inputs[0].data.sign]
+        end
+    end
+
 end

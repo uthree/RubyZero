@@ -31,5 +31,17 @@ module RubyZero::NN
         def +(other)
             Parameters.new(*(@elements + other.elements))
         end
+        def [](index)
+            return @elements[index]
+        end
+        def []=(index, value)
+            return @elements[index] = value
+        end
+        def each
+            @elements.each do |element|
+                yield element
+            end
+        end
+        include Enumerable
     end
 end

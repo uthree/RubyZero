@@ -31,6 +31,7 @@ module RubyZero::Data
 
     class DataLoader
         public
+        include Enumerable
         def initialize(dataset, batch_size=1, shuffle=false)
             @dataset = dataset
             @batch_size = batch_size

@@ -1,3 +1,6 @@
+require_relative "./core.rb"
+
+
 module RubyZero::Optimizers
     class SGD < Optimizer
         def initialize(learning_rate:0.01)
