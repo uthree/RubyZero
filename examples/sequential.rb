@@ -22,11 +22,11 @@ target = FloatTensor[
     [0]
 ]
 
-optimizer = Optimizers::SGD.new(learning_rate:0.01)
+optimizer = Optimizers::Momentum.new(learning_rate:0.01)
 criterion = Losses::MeanSquaredError.new
 optimizer << model
 model.train
-10000.times do 
+1000.times do 
     optimizer.zero_grad
     out = model.call(input)
     loss = criterion.call(out, target)

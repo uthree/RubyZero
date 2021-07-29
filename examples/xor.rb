@@ -30,15 +30,15 @@ class TwoLP < NN::Module
     end
 end
 
-model = TwoLP.new(mid_units = 10)
+model = TwoLP.new(mid_units = 20)
 criterion = Losses::MeanSquaredError.new
-optimizer = Optimizers::SGD.new(learning_rate:0.01)
+optimizer = Optimizers::Momentum.new(learning_rate:0.01)
 optimizer << model
 model.train
 
 output = nil
 
-100.times do
+1000.times do
     optimizer.zero_grad()
     output = model.call(input)
     loss = criterion.call(output,target)

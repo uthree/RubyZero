@@ -114,7 +114,7 @@ module RubyZero::Functions
     end
 
     # a.abs
-    class Absolute
+    class Absolute < Function
         def forward(a)
             return Tensor.new(a.data.abs)
         end
@@ -123,4 +123,33 @@ module RubyZero::Functions
         end
     end
 
+    # sin(a)
+    class Sin < Function
+        def forward(a)
+            return Tensor.new(a.xm.NMath.sin(a.data))
+        end
+        def backward(dy)
+            return [Tensor.new(dy * dy.xm.NMath.cos(@inputs[0].data))]
+        end
+    end
+
+    # cos(a)
+    class Cos < Function
+        def forward(a)
+            return Tensor.new(a.xm.NMath.cos(a.data))
+        end
+        def backward(dy)
+            return [Tensor.new(dy * -dy.xm.NMath.sin(@inputs[0].data))]
+        end
+    end
+
+    # tan(a)
+    class Tan < Function
+        def forward(a)
+            return Tensor.new(a.xm.NMath.tan(a.data))
+        end
+        def backward(dy)
+            return [Tensor.new(dy * dy.xm.NMath.cos(@inputs[0].data) ** -2)]
+        end
+    end
 end
