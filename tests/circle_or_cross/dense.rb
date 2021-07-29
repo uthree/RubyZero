@@ -8,7 +8,7 @@ dataloader = RubyZero::Data::DataLoader.new(dataset, batch_size=20, shuffle=true
 model = NN::Sequential.new()
 model << NN::Linear.new(784, 100)
 model << NN::Sigmoid.new()
-model << NN::Linear.new(1000, 2)
+model << NN::Linear.new(100, 2)
 
 criterion = Losses::MeanSquaredError.new()
 optimizer = Optimizers::SGD.new(learning_rate: 0.0001)

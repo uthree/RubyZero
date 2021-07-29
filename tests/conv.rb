@@ -18,7 +18,7 @@ input = Tensor[
 ]
 input.require_grad = true
 
-conv2d = NN::Conv2d.new(1, 1, 3)
+conv2d = NN::Conv2d.new(1, 1, 3, stride:2)
 conv2d.train
 out = conv2d.call(input)
 out.backward

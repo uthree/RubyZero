@@ -9,8 +9,7 @@ module RubyZero::NN
     private
         include Utils
     public
-        def initialize(in_channels, out_channels, kernel_size, stride=1, padding=0)
-            raise "stride > 1 is not implemented." if stride > 1 
+        def initialize(in_channels, out_channels, kernel_size, stride:1, padding:0)
             @in_channels = in_channels
             @out_channels = out_channels
             @kernel_size = kernel_size
@@ -22,7 +21,7 @@ module RubyZero::NN
         end
 
         def forward(x)
-            cols = im2col_1d(x, @kernel_size, @padding)
+            cols = im2col_1d(x, @kernel_size, @padding, @stride)
             # [batch, width-kernel, channels*kernel]
             dist_shape = [cols.shape[0], cols.shape[1], @out_channels]
             flat_cols = cols.flatten(start_axis: 0, end_axis:1) # [batch*(width-kernel), channels*kernel]
@@ -35,8 +34,7 @@ module RubyZero::NN
     private
         include Utils
     public
-        def initialize(in_channels, out_channels, kernel_size, stride=1, padding=0, kernel_height:nil, kernel_width:nil)
-            raise "stride > 1 is not implemented." if stride > 1 
+        def initialize(in_channels, out_channels, kernel_size, stride:1, padding:0, kernel_height:nil, kernel_width:nil)
             @kernel_width = kernel_size if kernel_width.nil?
             @kernel_height = kernel_size if kernel_height.nil?
             @in_channels = in_channels
@@ -48,7 +46,7 @@ module RubyZero::NN
             super()
         end
         def forward(x)
-            cols = im2col_2d(x, @kernel_height, @kernel_width, @padding)
+            cols = im2col_2d(x, @kernel_height, @kernel_width, @padding, @stride)
             # [batch, width-kernel, height-kernel, channels*kernel]
             dist_shape = [cols.shape[0], cols.shape[1], cols.shape[2], @out_channels]
             flat_cols = cols.flatten(start_axis: 0, end_axis:2) # [batch*(width-kernel)*(height-kernel), channels*kernel]

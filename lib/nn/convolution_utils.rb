@@ -2,14 +2,14 @@ require_relative "./nn.rb"
 
 module RubyZero
     module ConvolutionUtils
-        def im2col_1d(x, kernel, padding)
+        def im2col_1d(x, kernel, padding, stride)
             # x: [batch, width, channels]
             # padding
             x = padding_1d(x, padding)
             cols = []
             width = x.shape[1]
             kernel.times do |i|
-                col = x[nil, i..i+width-kernel, nil]
+                col = x[nil, (i..i+width-kernel).step(stride), nil]
                 cols << col
             end
             x = Tensor.stack(cols, axis: 2)
@@ -30,7 +30,7 @@ module RubyZero
             end
         end
 
-        def im2col_2d(x, kernel_h, kernel_w, padding)
+        def im2col_2d(x, kernel_h, kernel_w, padding, stride)
             # x: [batch, height, width, channels]
             # padding
             x = padding_2d(x, padding)
@@ -39,7 +39,7 @@ module RubyZero
             width = x.shape[2]
             kernel_h.times do |i|
                 kernel_w.times do |j|
-                    col = x[nil, i..i+height-kernel_h, j..j+width-kernel_w, nil]
+                    col = x[nil, (i..i+height-kernel_h).step(stride), (j..j+width-kernel_w).step(stride), nil]
                     cols << col
                 end
             end
@@ -76,7 +76,7 @@ module RubyZero
             end
         end
 
-        def im2col_3d(x, kernel_d, kernel_h, kernel_w, padding)
+        def im2col_3d(x, kernel_d, kernel_h, kernel_w, padding, stride)
             # x: [batch, depth, height, width, channels]
             # padding
             x = padding_3d(x, padding)
@@ -87,7 +87,7 @@ module RubyZero
             kernel_d.times do |i|
                 kernel_h.times do |j|
                     kernel_w.times do |k|
-                        col = x[nil, i..i+depth-kernel_d, j..j+height-kernel_h, k..k+width-kernel_w, nil]
+                        col = x[nil, (i..i+depth-kernel_d).step(stride), (j..j+height-kernel_h).step(stride), (k..k+width-kernel_w).step(stride), nil]
                         cols << col
                     end
                 end

@@ -106,6 +106,7 @@ module RubyZero
         def swap_axes(*axes)
             return Functions::SwapAxes.new(*axes).call(self)
         end
+        alias_method :swapaxes, :swap_axes
 
         def repeat(repeats, axis:0)
             # どの軸にもRepeatできるように拡張したもの
