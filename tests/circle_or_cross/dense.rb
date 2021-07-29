@@ -11,7 +11,7 @@ model << NN::Sigmoid.new()
 model << NN::Linear.new(100, 2)
 
 criterion = Losses::MeanSquaredError.new()
-optimizer = Optimizers::SGD.new(learning_rate: 0.0001)
+optimizer = Optimizers::Momentum.new(learning_rate: 0.0001)
 optimizer << model
 
 
