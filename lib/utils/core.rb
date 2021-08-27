@@ -1,2 +1,0 @@
-module RubyZero::Utils
-end
