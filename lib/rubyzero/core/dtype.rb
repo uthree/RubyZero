@@ -7,9 +7,10 @@ module RubyZero::Core
             def ==(other)
                 self.class == other.class
             end
-            def [](*args)
-                data = self.get_dtype_on_device(Device.new(:cumo)).[](*args)
-                t = tensor.new()
+            def self.[](*args)
+                data = self.get_dtype_on_device(Device.new(:numo)).[](*args)
+                t = Tensor.new(data, dtype:self)
+                return t
             end
             # @param [Device] device
             # @return [Class]
