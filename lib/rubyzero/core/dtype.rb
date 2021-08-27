@@ -9,36 +9,35 @@ module RubyZero::Core
             end
             # @param [Device] device
             # @return [Class]
-            def get_dtype_on_device(device)
+            def self.get_dtype_on_device(device)
                 if device.id == :numo
-                    case self.class 
-                    when Boolean
+                    if self == Boolean
                         return Numo::Bit
-                    when Int8
+                    elsif self == Int8
                         return Numo::Int8
-                    when Int16
+                    elsif self == Int16
                         return Numo::Int16
-                    when Int32
+                    elsif self == Int32
                         return Numo::Int32
-                    when Int64
+                    elsif self == Int64
                         return Numo::Int64
-                    when UInt8
+                    elsif self == UInt8
                         return Numo::UInt8
-                    when UInt16
+                    elsif self == UInt16
                         return Numo::UInt16
-                    when UInt32
+                    elsif self == UInt32
                         return Numo::UInt32
-                    when UInt64
+                    elsif self == UInt64
                         return Numo::UInt64
-                    when Float32
+                    elsif self == Float32
                         return Numo::SFloat
-                    when Float64
+                    elsif self == Float64
                         return Numo::DFloat
-                    when RObject 
+                    elsif self == RObject
                         return Numo::RObject
-                    when Complex64
+                    elsif self == Complex64
                         return Numo::SComplex
-                    when Complex128
+                    elsif self == Complex128
                         return Numo::DComplex
                     end
                 end
@@ -72,6 +71,39 @@ module RubyZero::Core
         class Complex64 < DType
         end
         class Complex128 < DType
+        end
+
+        def from_numo_dtype(dtype)
+            case dtype
+            when Numo::Bit
+                Boolean
+            when Numo::Int8
+                Int8
+            when Numo::Int16
+                Int16
+            when Numo::Int32
+                Int32
+            when Numo::Int64
+                Int64
+            when Numo::UInt8
+                UInt8
+            when Numo::UInt16
+                UInt16
+            when Numo::UInt32
+                UInt32
+            when Numo::UInt64
+                UInt64
+            when Numo::SFloat
+                Float32
+            when Numo::DFloat
+                Float64
+            when Numo::RObject
+                RObject
+            when Numo::SComplex
+                Complex64
+            when Numo::DComplex
+                Complex128
+            end
         end
     end
 end

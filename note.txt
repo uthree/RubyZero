@@ -3,7 +3,8 @@ RubyZero module
 		Tensor class
 		Matrix class
 		Vector class
-		DType class
+        Datatypes module
+		    DType class
 		Device class (wrapping Numo/Cumo and other libraries...?)
         Shape class
         Axis class
