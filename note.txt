@@ -1,0 +1,27 @@
+RubyZero module
+	Core module
+		Tensor class
+		Matrix class
+		Vector class
+		DType class
+		Device class (wrapping Numo/Cumo and other libraries...?)
+        Shape class
+        Axis class
+	NN module
+        model class
+		Functions module
+            Activation functions
+        Functional module
+            (likes Torch.nn.functional)
+        Layers module
+            (likes Torch.nn)
+            Linear class
+            Conv2d class
+            etc...
+        Optimizers module
+            SGD class
+            Momentum class
+            etc...
+        Losses module
+            MSELoss class
+            etc...
