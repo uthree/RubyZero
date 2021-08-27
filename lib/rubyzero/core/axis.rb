@@ -15,17 +15,25 @@ module RubyZero::Core
             @keys = keys
         end
         # Returns the index of the key.
-        # @return [Integer]
-        # @param [Object] key
+        # @return [Integer|Range]
+        # @param [Object|Range<Object, Object>] key
         def key2index(key)
-            if @keys[key]
+            if keys.kind_of?(Range)
+                b = key.begin
+                e = key.end
+                s = key.step
+                b_i = @keys[b]
+                e_i = @keys[e]
+                rng = Range.new(b_i, e_i).step(s)
+
+            elsif @keys[key]
                 @keys.index(key)
             else
                 raise ArgumentError, "key #{key} not found"
             end
         end
         # Returns the key of the index.
-        # @return [Integer]
+        # @return [Integer|Range]
         # @param [Object] key
         def [](key)
             key2index(key)
