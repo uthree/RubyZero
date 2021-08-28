@@ -7,7 +7,7 @@ module RubyZero::Core
             if axes.length > 0
                 @axes = axes.map {|axis|
                     if axis.class == (Integer)
-                        Axis.new(axis)
+                        Axis.new(axis, self)
                     else
                         axis
                     end
@@ -87,7 +87,7 @@ module RubyZero::Core
         # @return [Tensor]
         def apply_shape(shape)
             # TODO: check shape
-            self.shape = shape
+            @shape = shape
         end
     end
 end

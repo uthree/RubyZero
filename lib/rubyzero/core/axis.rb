@@ -6,13 +6,14 @@ module RubyZero::Core
         # @option kwargs [String] :name
         # @option kwargs [Array<String|Symbol|NilClass>] :keys
         # @return [Axis] 
-        def initialize(length, **kwargs)
+        def initialize(length, parent, **kwargs)
             name = kwargs[:name]
             keys = kwargs[:keys]
-
+            
             @length = length
             @name = name
             @keys = keys
+            @parent = parent
         end
         # Returns the index of the key.
         # @return [Integer|Range]
@@ -42,6 +43,10 @@ module RubyZero::Core
         # @return [Integer] 
         def size
             @length
+        end
+
+        def index
+            return @parent.index if @parent
         end
     end
 end

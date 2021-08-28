@@ -8,7 +8,9 @@ module RubyZero::Core::Functions
         # @return [Tensor]
         def forward(x)
             calculator = x.device.calculator
-            data = x.data.repeat(@num_repeats, axis: 0)
+            data = x.data
+            data = data.reshape(*([1]+(data.shape.to_a)))
+            data = data.repeat(@num_repeats, axis: 0)
             return Tensor.new(data, device: x.device)
         end
         # @param [Tensor] dy
@@ -44,6 +46,7 @@ module RubyZero::Core::Functions
             t = Tensor.new(data, device: x.device)
             new_shape = t.shape.transpose(*@args)
             t.apply_shape(new_shape)
+            return t
         end
         def backward(dy)
             rev = []
@@ -61,7 +64,25 @@ module RubyZero::Core
         # transpose tensor
         # @param [Array<Integer>] args
         def transpose(*args)
-            return RubyZero::Core::Functions::Transpose.new(*args).call(self)
+            return Functions::Transpose.new(*args).call(self)
+        end
+
+        # repeat tensor
+        # @param [Integer] num_repeats
+        # @option options [Integer] axis
+        def repeat(num_repeats, axis: 0)
+            repeated = Functions::RepeatZeroAxis.new(num_repeats).call(self)
+            transposed = Functions::Transpose.new(0, axis+1).call(repeated)
+            return transposed
+        end
+
+        # caluculate sum of tensor
+        # @param [Integer] axis
+        # @return [Tensor]
+        def sum(axis: 0)
+            sza = Functions::SumZeroAxis.new().call(self)
+            transposed = Functions::Transpose.new(0, axis).call(sza)
+            return transposed
         end
     end
 end
