@@ -118,6 +118,22 @@ module RubyZero::Core::Functions
             return [@input[@min_idx]]
         end
     end
+
+    class MatMul < Function
+        # Multiply two matrices ( x1 dot x2 )
+        # @param [Tensor] x1
+        # @param [Tensor] x2
+        # @return [Tensor]
+        def forward(x1, x2)
+            data = x1.data.dot(x2.data)
+            return Tensor.new(data, device: x1.device)
+        end
+        def backward(dy)
+            x1 = @input[0]
+            x2 = @input[1]
+            return [F.matmul(dy, x2.transpose()), F.matmul(x1.transpose(), dy)]
+        end
+    end
 end
 
 # Apply a function to tensor class.
@@ -188,6 +204,11 @@ module RubyZero::Core
         # @return [Tensor]
         def min(axis: 0)
             return Functions::MinZeroAxis.new().call(self.swap_axes(0, axis)).swap_axes(0, axis)
+        end
+
+        # calculate matrix multiplication ( also called dot product )
+        def matmul(other)
+            return F.matmul(self, other)
         end
     end
 end

@@ -56,7 +56,7 @@ module RubyZero::Core
             end
             @grad_function = nil
             @grad_tensor = nil
-            @requires_grad = true
+            @requires_grad = false
             return Functions::Constant.new.call(self)
         end
         # Execute gradient function.
@@ -169,6 +169,13 @@ module RubyZero::Core
         # @return [RubyZero::Core::Tensor]
         def ones_like
             return self.class.ones_like(self)
+        end
+
+        # Detach tensor from calculation graph.
+        # @return [Tensor]
+        def detach
+            self.grad_function = nil
+            return self
         end
     end
 end
