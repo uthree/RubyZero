@@ -57,7 +57,7 @@ module RubyZero::Core::Functions
         end
     end
 
-    class ReShape < Function
+    class Reshape < Function
         # @param [Array<Integer>|Shape] args
         def initialize(*args)
             if args.length == 1 and args[0].is_a?(Shape)
@@ -102,6 +102,13 @@ module RubyZero::Core
             sza = Functions::SumZeroAxis.new().call(self)
             transposed = Functions::Transpose.new(0, axis).call(sza)
             return transposed
+        end
+
+        # reshape tensor
+        # @param [Array<Integer>|Shape] args
+        # @return [Tensor]
+        def reshape(*args)
+            return Functions::Reshape.new(*args).call(self)
         end
     end
 end
