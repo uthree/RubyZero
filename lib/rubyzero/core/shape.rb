@@ -77,6 +77,15 @@ module RubyZero::Core
         def transpose(*args)
             return dup.transpose!(*args)
         end
+
+        def swap_axes!(axis1, axis2)
+            @axes[axis1], @axes[axis2] = @axes[axis2], @axes[axis1]
+            return self
+        end
+
+        def swap_axes(axis1, axis2)
+            return dup.swap_axes!(axis1, axis2)
+        end
     end
 end
 

@@ -15,7 +15,7 @@ module RubyZero::Core::Functions
         end
         # @param [Tensor] dy
         def backward(dy)
-            return SumZeroAxis.new().call(dy)
+            return [SumZeroAxis.new().call(dy)]
         end
     end
 
@@ -29,7 +29,7 @@ module RubyZero::Core::Functions
         end
         # @param [Tensor] dy
         def backward(dy)
-            return RepeatZeroAxis.new(dy.data.shape.to_a[0]).call(dy)
+            return [RepeatZeroAxis.new(dy.data.shape.to_a[0]).call(dy)]
         end
     end
 
@@ -53,7 +53,7 @@ module RubyZero::Core::Functions
             @args.each_with_index do |i, idx|
                 rev[i] = idx
             end
-            return Transpose.new(*rev).call(dy)
+            return [Transpose.new(*rev).call(dy)]
         end
     end
 
@@ -72,7 +72,50 @@ module RubyZero::Core::Functions
             return Tensor.new(data, device: x.device)
         end
         def backward(dy)
-            return ReShape.new(@input_shape).call(dy)
+            return [ReShape.new(@input_shape).call(dy)]
+        end
+    end
+
+    class SwapAxes < Function
+        # @param [Integer] axis1
+        # @param [Integer] axis2
+        def initialize(axis1, axis2)
+            @axis1 = axis1
+            @axis2 = axis2
+        end
+        def forward(x)
+            calculator = x.device.calculator
+            data = x.data.swapaxes(@axis1, @axis2)
+            return Tensor.new(data, device: x.device)
+        end
+        def backward(dy)
+            return [SwapAxes.new(@axis2, @axis1).call(dy)]
+        end
+    end
+
+    class MaxZeroAxis < Function
+        # @param [Tensor] x
+        # @return [Tensor]
+        def forward(x)
+            calculator = x.device.calculator
+            @max_idx = x.data.argmax(axis: 0)
+            return Tensor.new(x.data[@max_idx], device: x.device)
+        end
+        def backward(dy)
+            return [@input[@max_idx]]
+        end
+    end
+
+    class MinZeroAxis < Function
+        # @param [Tensor] x
+        # @return [Tensor]
+        def forward(x)
+            calculator = x.device.calculator
+            @min_idx = x.data.argmin(axis: 0)
+            return Tensor.new(data[@min_idx], device: x.device)
+        end
+        def backward(dy)
+            return [@input[@min_idx]]
         end
     end
 end
@@ -81,8 +124,11 @@ end
 module RubyZero::Core
     class Tensor
         # transpose tensor
-        # @param [Array<Integer>] args
+        # @param [Array<Integer>|Shape] args
         def transpose(*args)
+            if args[0].is_a?(Shape)
+                args = args[0].to_a
+            end
             return Functions::Transpose.new(*args).call(self)
         end
 
@@ -108,7 +154,40 @@ module RubyZero::Core
         # @param [Array<Integer>|Shape] args
         # @return [Tensor]
         def reshape(*args)
+            if args[0].is_a?(Shape)
+                args = args[0].to_a
+            end
             return Functions::Reshape.new(*args).call(self)
+        end
+
+        # swap axes of tensor
+        # @param [Integer|Axis] axis1
+        # @param [Integer|Axis] axis2
+        # @return [Tensor]
+        def swap_axes(axis1, axis2)
+            axis1, axis2 = axis1.to_i, axis2.to_i
+            if axis1 != axis2
+                tensor = Functions::SwapAxes.new(axis1, axis2).call(self)
+                new_shape = self.shape.swap_axes(axis1, axis2)
+                tensor.apply_shape(new_shape)
+                return tensor
+            else
+                return self
+            end
+        end
+
+        # get min value of an axis
+        # @param [Integer] axis
+        # @return [Tensor]
+        def max(axis: 0)
+            return Functions::MaxZeroAxis.new().call(self.swap_axes(0, axis)).swap_axes(0, axis)
+        end
+
+        # get min value of an axis
+        # @param [Integer] axis
+        # @return [Tensor]
+        def min(axis: 0)
+            return Functions::MinZeroAxis.new().call(self.swap_axes(0, axis)).swap_axes(0, axis)
         end
     end
 end

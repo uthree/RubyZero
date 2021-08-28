@@ -2,8 +2,9 @@ module RubyZero::Core
     class Tensor
         # Broadcast a tensor to a new shape
         def bloadcast_to(other)
+            return if self.shape.to_a == other.shape.to_a
             if other.kind_of? Tensor
-                raise ShapeMissmatchError, "Cannot broadcast shape=#{self.shape.to_a} to shape=#{self.shape.to_a}" unless other.shape.axes[self.ndim..-1] == other.shape.to_a
+                raise Exceptions::ShapeMissmatchError, "Cannot broadcast shape=#{self.shape.to_a} to shape=#{other.shape.to_a}" unless other.shape.to_a[self.ndim..-1] == self.shape.to_a
                 repeat_axes = other.shape.axes[self.ndim..-1]
                 repeat_axes.each do |axis|
                     self.repeat(axis.size, axis: axis.index)

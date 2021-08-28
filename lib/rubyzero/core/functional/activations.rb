@@ -1,11 +1,20 @@
 module RubyZero::Core::Functional
     # @param [Tensor] x
-    # @retirn [Tensor]
-    def sigmoid(x, alpha: 1.0)
-        Functions::Sigmoid.new(alpha: alpha).call(x)
+    # @return [Tensor]
+    def self.sigmoid(x, alpha: 1.0)
+        Core::Functions::Sigmoid.new(alpha: alpha).call(x)
     end
 
-    def relu(x)
-        Functions::Relu.new.call(x)
+    # @param [Tensor] x
+    # @return [Tensor]
+    def self.relu(x)
+        Core::Functions::Relu.new.call(x)
+    end
+
+    def self.softmax(x, axis: -1)
+        x = x.swap_axes(axis, 0) if axis != 0
+        x = Core::Functions::SoftmaxZeroAxis.new.call(x)
+        x = x.swap_axes(0, axis) if axis != 0
+        return x
     end
 end

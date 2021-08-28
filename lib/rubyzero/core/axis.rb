@@ -46,7 +46,11 @@ module RubyZero::Core
         end
 
         def index
-            return @parent.index if @parent
+            return @parent.index
+        end
+
+        def to_i
+            return index
         end
     end
 end
