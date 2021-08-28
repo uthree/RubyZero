@@ -29,4 +29,29 @@ module RubyZero::Core::Functional
     def exp(x)
         return Functions::Exp.new().call(x)
     end
+    # Raise to power function (y = x1, x2)
+    # @param [Tensor] x1
+    # @param [Tensor] x2
+    # @return [Tensor]
+    def pow(x1, x2)
+        return Functions::Pow.new().call(x1, x2)
+    end
+    # Sine hyperbolic function (y = sinh(x))
+    # @param [Tensor] x
+    # @return [Tensor]
+    def sinh(x)
+        return Functions::Sinh.new().call(x)
+    end
+    # Cosine hyperbolic function (y = cosh(x))
+    # @param [Tensor] x
+    # @return [Tensor]
+    def cosh(x)
+        return Functions::Cosh.new().call(x)
+    end
+    # Tangent hyperbolic function (y = tanh(x))
+    # @param [Tensor] x
+    # @return [Tensor]
+    def tanh(x)
+        return Functions::Tanh.new().call(x)
+    end
 end

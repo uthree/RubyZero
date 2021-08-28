@@ -49,9 +49,20 @@ module RubyZero::Core
             @grad_tensor = ones_like()
             if self.requires_grad and @grad_function
                 grad_result = @grad_function.backward(@grad_tensor)
-                self.grad_function.input.each_with_index {|t, i| t.grad_tensor = grad_result[i] }
+                self.grad_function.input.each_with_index {|t, i| t.add_grad grad_result[i] }
             end
             return self
+        end
+
+        # Add gradient to self.
+        # @param [RubyZero::Core::Tensor] grad_t
+        # @return [RubyZero::Core::Tensor]
+        def add_grad(grad_t)
+            if @grad_tensor
+                @grad_tensor += grad_t
+            else
+                @grad_tensor = grad_t
+            end
         end
 
         # @retrun [String]
