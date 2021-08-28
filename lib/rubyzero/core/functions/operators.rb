@@ -28,8 +28,8 @@ module RubyZero::Core::Functions
         # @param [Tensor] x
         # @param [Tensor] y
         # @return [Tensor]
-        def forward(x, y)
-            Tensor.new(x.data + y.data)
+        def forward(x1, x2)
+            Tensor.new(x1.data + x2.data)
         end
         def backward(dy)
             return [dy, dy]
@@ -41,8 +41,8 @@ module RubyZero::Core::Functions
         # @param [Tensor] x
         # @param [Tensor] y
         # @return [Tensor]
-        def forward(x, y)
-            Tensor.new(x.data - y.data)
+        def forward(x1, x2)
+            Tensor.new(x1.data - x2.data)
         end
         def backward(dy)
             return [dy, -dy]
@@ -54,8 +54,8 @@ module RubyZero::Core::Functions
         # @param [Tensor] x
         # @param [Tensor] y
         # @return [Tensor]
-        def forward(x, y)
-            Tensor.new(x.data * y.data)
+        def forward(x1, x2)
+            Tensor.new(x1.data * x2.data)
         end
         def backward(dy)
             return [dy * @input[1], dy * @input[0]]
@@ -67,11 +67,36 @@ module RubyZero::Core::Functions
         # @param [Tensor] x
         # @param [Tensor] y
         # @return [Tensor]
-        def forward(x, y)
-            Tensor.new(x.data / y.data)
+        def forward(x1, x2)
+            Tensor.new(x1.data / x2.data)
         end
         def backward(dy)
             return [dy / @input[1], -dy * @input[0] / (@input[1] ** 2)]
+        end
+    end
+
+    class Pow < Function
+        # Raise a tensor to a power
+        # @param [Tensor] x1
+        # @param [Tensor] x2
+        def forward(x1, x2)
+            Tensor.new(x1.data ** x2.data)
+        end
+        def backward(dy)
+            return [dy * @input[1] * (@input[0] ** (@input[1] - 1)),
+                    dy * @input[0] ** @input[1] * F.log(@input[0])]
+        end
+    end
+    class Log < Function
+        # Take the logarithm of a tensor
+        # @param [Tensor] x
+        def forward(x)
+            calculator = x.device.calculator
+            data = calculator::NMath.log(x.data)
+            return Tensor.new(data)
+        end
+        def backward(dy)
+            return [dy / @input[0]]
         end
     end
 end

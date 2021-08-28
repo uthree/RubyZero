@@ -1,6 +1,7 @@
 # Function (base class)
 module RubyZero::Core::Functions
     class Function
+        attr_reader :input, :output
         def initialize()
             @input = nil
         end

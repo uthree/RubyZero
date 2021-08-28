@@ -10,10 +10,11 @@ RubyZero module
         Axis class
     	Functions module
             Activation functions
-	NN module
-        model class
         Functional module
             (likes Torch.nn.functional)
+	NN module
+        model class
+
         Layers module
             (likes Torch.nn)
             Linear class

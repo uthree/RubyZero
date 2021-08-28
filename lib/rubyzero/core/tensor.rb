@@ -1,7 +1,7 @@
 module RubyZero::Core
     class Tensor
         attr_reader :shape, :dtype
-        attr_accessor :grad_function, :grad_tensor, :requires_grad, :data
+        attr_accessor :grad_function, :grad_tensor, :requires_grad, :data, :device
 
         # @param [Shape] shape
         # @param [Datatypes::DType] dtype
@@ -43,6 +43,17 @@ module RubyZero::Core
             @requires_grad = true
             return Functions::Constant.new.call(self)
         end
+        # Execute gradient function.
+        # @return [RubyZero::Core::Tensor]
+        def backward()
+            @grad_tensor = ones_like()
+            if self.requires_grad and @grad_function
+                grad_result = @grad_function.backward(@grad_tensor)
+                self.grad_function.input.each_with_index {|t, i| t.grad_tensor = grad_result[i] }
+            end
+            return self
+        end
+
         # @retrun [String]
         def inspect
             numo_inspect = @data.inspect.split("\n")[1..nil].join("\n")
@@ -73,7 +84,7 @@ module RubyZero::Core
         # @option options [Device] :device
         # @return [RubyZero::Core::Tensor]
         def self.zeros(shape, dtype, device:Device.new(:numo))
-            data = dtype.get_dtype_on_device().zeros(*shape.to_a)
+            data = dtype.get_dtype_on_device(device).zeros(*shape.to_a)
             t = new(data, shape: shape, dtype: dtype)
             return t
         end
@@ -83,7 +94,7 @@ module RubyZero::Core
         # @option options [Device] :device
         # @return [RubyZero::Core::Tensor]
         def self.ones(shape, dtype, device:Device.new(:numo))
-            data = dtype.get_dtype_on_device().ones(*shape.to_a)
+            data = dtype.get_dtype_on_device(device).ones(*shape.to_a)
             t = new(data, shape: shape, dtype: dtype)
             return t
         end
@@ -93,7 +104,7 @@ module RubyZero::Core
         # @return [RubyZero::Core::Tensor]
         def self.zeros_like(tensor)
             shape, dtype, device = tensor.shape, tensor.dtype, tensor.device
-            data = dtype.get_dtype_on_device().zeros(*shape.to_a)
+            data = dtype.get_dtype_on_device(device).zeros(*shape.to_a)
             t = new(data, shape: shape, dtype: dtype, device: device)
             return t
         end
@@ -102,7 +113,7 @@ module RubyZero::Core
         # @return [RubyZero::Core::Tensor]
         def self.ones_like(tensor)
             shape, dtype, device = tensor.shape, tensor.dtype, tensor.device
-            data = dtype.get_dtype_on_device().ones(*shape.to_a)
+            data = dtype.get_dtype_on_device(device).ones(*shape.to_a)
             t = new(data, shape: shape, dtype: dtype, device: device)
             return t
         end
