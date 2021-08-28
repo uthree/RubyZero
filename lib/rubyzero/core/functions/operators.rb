@@ -96,26 +96,36 @@ module RubyZero::Core
         # @param [Tensor] other
         # @return [Tensor]
         def +(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
             RubyZero::Core::Functions::Add.new.call(self, other)
         end
         # @param [Tensor] other
         # @return [Tensor]
         def -(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
             RubyZero::Core::Functions::Sub.new.call(self, other)
         end
         # @param [Tensor] other
         # @return [Tensor]
         def *(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
             RubyZero::Core::Functions::Mul.new.call(self, other)
         end
         # @param [Tensor] other
         # @return [Tensor]
         def /(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
             RubyZero::Core::Functions::Div.new.call(self, other)
         end
         # @return [Tensor]
         def -@
+            _, other = Tensor.bloadcast_to_same(self, other)
             RubyZero::Core::Functions::Negative.new.call(self)
+        end
+
+        def coerce(other)
+            [self, Tensor[other]]
         end
     end
 end
+

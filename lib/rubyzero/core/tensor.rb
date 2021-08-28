@@ -60,6 +60,11 @@ module RubyZero::Core
             return "#{dtype}#shape=#{shape.to_a}\n#{numo_inspect}\ngrad_function=#{@grad_function.class}"
         end
 
+        # @return [Integer]
+        def ndim
+            return self.shape.ndim
+        end
+
         # @param [Datatypes::DType] dtype
         def cast_to(dtype)
             @data = dtype.get_dtype_on_device(@device).cast(@data)
