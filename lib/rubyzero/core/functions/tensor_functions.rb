@@ -1,6 +1,6 @@
 module RubyZero::Core::Functions
     class RepeatZeroAxis < Function
-        # @param [Integer] number
+        # @param [Integer] num_repeats
         def initialize(num_repeats)
             @num_repeats = num_repeats
         end
@@ -42,6 +42,8 @@ module RubyZero::Core::Functions
             calculator = x.device.calculator
             data = x.data.transpose(*@args)
             t = Tensor.new(data, device: x.device)
+            new_shape = t.shape.transpose(*@args)
+            t.apply_shape(new_shape)
         end
         def backward(dy)
             rev = []
@@ -56,6 +58,8 @@ end
 # Apply a function to tensor class.
 module RubyZero::Core
     class Tensor
+        # transpose tensor
+        # @param [Array<Integer>] args
         def transpose(*args)
             return RubyZero::Core::Functions::Transpose.new(*args).call(self)
         end

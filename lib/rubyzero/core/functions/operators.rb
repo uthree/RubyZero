@@ -25,8 +25,8 @@ module RubyZero::Core::Functions
 
     class Add < Function
         # Add two tensors
-        # @param [Tensor] x
-        # @param [Tensor] y
+        # @param [Tensor] x1
+        # @param [Tensor] x2
         # @return [Tensor]
         def forward(x1, x2)
             Tensor.new(x1.data + x2.data)
@@ -38,8 +38,8 @@ module RubyZero::Core::Functions
 
     class Sub < Function
         # Subtract two tensors
-        # @param [Tensor] x
-        # @param [Tensor] y
+        # @param [Tensor] x1
+        # @param [Tensor] x2
         # @return [Tensor]
         def forward(x1, x2)
             Tensor.new(x1.data - x2.data)
@@ -51,8 +51,8 @@ module RubyZero::Core::Functions
 
     class Mul < Function
         # Multiply two tensors
-        # @param [Tensor] x
-        # @param [Tensor] y
+        # @param [Tensor] x1
+        # @param [Tensor] x2
         # @return [Tensor]
         def forward(x1, x2)
             Tensor.new(x1.data * x2.data)
@@ -64,8 +64,8 @@ module RubyZero::Core::Functions
 
     class Div < Function
         # Divide two tensors
-        # @param [Tensor] x
-        # @param [Tensor] y
+        # @param [Tensor] x1
+        # @param [Tensor] x2
         # @return [Tensor]
         def forward(x1, x2)
             Tensor.new(x1.data / x2.data)

@@ -60,5 +60,34 @@ module RubyZero::Core
             return [] if @scaler
             return @axes.map {|axis| axis.size} unless @scaler
         end
+
+        # @param [Array<Integer>] args
+        # @return [Shape]
+        def transpose!(*args)
+            axes = []
+            args.each_with_index do |axis, index|
+                axes << @axes[axis]
+            end
+            @axes = axes
+            return self
+        end
+
+        # @param [Array<Integer>] args
+        # @return [Shape]
+        def transpose(*args)
+            return dup.transpose!(*args)
+        end
+    end
+end
+
+module RubyZero::Core
+    class Tensor
+        # Apply shape to tensor
+        # @param [Shape] shape
+        # @return [Tensor]
+        def apply_shape(shape)
+            # TODO: check shape
+            self.shape = shape
+        end
     end
 end
