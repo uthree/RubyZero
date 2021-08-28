@@ -2,14 +2,16 @@ module RubyZero::Core
     class Tensor
         attr_reader :shape, :dtype
         attr_accessor :grad_function, :grad_tensor, :requires_grad, :data, :device
-
+        # Initialize tensor with same shape.
+        # @param [Array<Object>|Tensor|Numeric] data
         # @param [Shape] shape
         # @param [Datatypes::DType] dtype
         # @param [Device] device
-        def initialize(data=[], shape:Shape.new(), dtype: nil, device:Device.new(:numo))
+        def initialize(data=[], shape:nil, dtype: nil, device:Device.new(:numo)) # TODO: Refactor this method.
+            shape ||= Shape.new()
             if data
                 if data.is_a?(Array)
-                    data = Numo::NArray[*data]
+                    data_arr = Numo::NArray[*data]
                     predicted_type = DataTypes::Float64
                     if data.flatten[0].is_a?(Integer)
                         predicted_type = DataTypes::Int64
@@ -21,16 +23,30 @@ module RubyZero::Core
                         predicted_type = DataTypes::RObject
                     end
                     @dtype ||= predicted_type
+                    data = @dtype.get_dtype_on_device(device).cast(data_arr)
+                    @shape = shape || Shape.new(*data.shape)
+                elsif data.is_a?(Numeric)
+                    predicted_type = DataTypes::RObject
+                    if data.is_a?(Integer)
+                        predicted_type = DataTypes::Int64
+                    elsif data.is_a?(Float)
+                        predicted_type = DataTypes::Float64
+                    elsif data.is_a?(Complex)
+                        predicted_type = DataTypes::Complex128
+                    end
+                    xmo_type = predicted_type.get_dtype_on_device(device)
+                    data = xmo_type[data]
+                    device = device
                 elsif data.is_a?(Numo::NArray)
                     @dtype ||= DataTypes::from_numo_dtype(data.class)
-                elsif data.is_a>(Tensor)
-                    return new(data.data, shape: data.shape, dtype: data.dtype)
+                elsif data.is_a?(Tensor)
+                    data = data.data
                 else
-                    raise TypeError, "data must be Array or Numo::NArray"
+                    raise TypeError, "#{data.class} is cannot convert to tensor. data must be Array or Numo::NArray."
                 end
                 @device = device
                 @data = data
-                @shape = Shape.new(*data.shape)
+                @shape ||= Shape.new(*data.shape.to_a)
                 @dtype ||= DataTypes::from_numo_dtype(data.class)
             else
                 @device = device
@@ -77,19 +93,24 @@ module RubyZero::Core
         end
 
         # @param [Datatypes::DType] dtype
-        def cast_to(dtype)
+        def cast_to!(dtype)
             @data = dtype.get_dtype_on_device(@device).cast(@data)
             if @grad_tensor and @grad_tensor.dtype != dtype and @grad_tensor != self
                 @grad_tensor.cast_to(dtype)
             end
-            nil
+            return self
+        end
+
+        # @param [Datatypes::DType] dtype
+        def cast_to(dtype)
+            return dup.cast_to!(dtype)
         end
 
         # initialize RubyZero::Core::Tensor[1, 2, 3... ] style.
         # @param [Array<Object>] data
         # @return [RubyZero::Core::Tensor]
         def self.[](*data)
-            new(data)
+            Tensor.new(data)
         end
 
         # @return [Array<Object>]

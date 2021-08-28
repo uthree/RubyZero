@@ -79,7 +79,11 @@ module RubyZero::Core
         end
 
         def swap_axes!(axis1, axis2)
-            @axes[axis1], @axes[axis2] = @axes[axis2], @axes[axis1]
+            if axis1.class == Axis and axis2.class == Axis
+                @axes[axis1.index], @axes[axis2.index] = @axes[axis2.index], @axes[axis1.index]
+            else 
+                @axes[axis1], @axes[axis2] = @axes[axis2], @axes[axis1]
+            end
             return self
         end
 

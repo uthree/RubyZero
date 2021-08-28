@@ -3,7 +3,6 @@ module RubyZero::Core::Functions
     class Function
         attr_reader :input, :output
         def initialize()
-            p "initialized function"
             @input = nil
         end
         def call(*args)

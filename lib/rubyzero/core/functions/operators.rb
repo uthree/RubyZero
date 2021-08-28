@@ -124,7 +124,7 @@ module RubyZero::Core
         end
 
         def coerce(other)
-            [self, Tensor[other]]
+            return [Tensor.new(other), self]
         end
     end
 end

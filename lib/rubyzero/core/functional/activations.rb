@@ -11,7 +11,8 @@ module RubyZero::Core::Functional
         Core::Functions::Relu.new.call(x)
     end
 
-    def self.softmax(x, axis: -1)
+    def self.softmax(x, axis: nil)
+        axis = x.shape.axes[-1] if axis.nil?
         x = x.swap_axes(axis, 0) if axis != 0
         x = Core::Functions::SoftmaxZeroAxis.new.call(x)
         x = x.swap_axes(0, axis) if axis != 0

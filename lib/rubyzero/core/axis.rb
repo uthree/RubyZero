@@ -46,7 +46,7 @@ module RubyZero::Core
         end
 
         def index
-            return @parent.index
+            return @parent.axes.index(self)
         end
 
         def to_i

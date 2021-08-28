@@ -48,9 +48,10 @@ module RubyZero::Core::Functions
         # @return [Tensor]
         def forward(x)
             x_max = x.max(axis: 0)
+            p x.shape, x_max.shape
             x_exp = F.exp(x - x_max)
             @x_exp_sum = x_exp.sum(axis: 0)
-            return @x_exp / @x_exp_sum
+            return x_exp / @x_exp_sum
         end
         def backward(dy)
             return [F.exp(dy) / @x_exp_sum]

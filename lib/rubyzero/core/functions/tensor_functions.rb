@@ -98,7 +98,7 @@ module RubyZero::Core::Functions
         # @return [Tensor]
         def forward(x)
             calculator = x.device.calculator
-            @max_idx = x.data.argmax(axis: 0)
+            @max_idx = x.data.argmax(axis: 0).to_i
             return Tensor.new(x.data[@max_idx], device: x.device)
         end
         def backward(dy)
@@ -111,7 +111,7 @@ module RubyZero::Core::Functions
         # @return [Tensor]
         def forward(x)
             calculator = x.device.calculator
-            @min_idx = x.data.argmin(axis: 0)
+            @min_idx = x.data.argmin(axis: 0).to_i
             return Tensor.new(data[@min_idx], device: x.device)
         end
         def backward(dy)
@@ -137,7 +137,7 @@ module RubyZero::Core
         # @option options [Integer] axis
         def repeat(num_repeats, axis: 0)
             repeated = Functions::RepeatZeroAxis.new(num_repeats).call(self)
-            transposed = Functions::Transpose.new(0, axis+1).call(repeated)
+            transposed = repeated.swap_axes(0, axis)
             return transposed
         end
 
@@ -146,7 +146,7 @@ module RubyZero::Core
         # @return [Tensor]
         def sum(axis: 0)
             sza = Functions::SumZeroAxis.new().call(self)
-            transposed = Functions::Transpose.new(0, axis).call(sza)
+            transposed = sza.swap_axes(0, axis)
             return transposed
         end
 
