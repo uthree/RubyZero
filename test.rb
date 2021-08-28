@@ -1,3 +1,6 @@
 require "./lib/rubyzero.rb"
-p RubyZero::Tensor[1,2,3]
-p RubyZero::Core::DataTypes::Float32[1,2,3]
+include RubyZero
+a = Tensor[1,2,3]
+b = Tensor[1,2,3]
+c = a + b
+p c

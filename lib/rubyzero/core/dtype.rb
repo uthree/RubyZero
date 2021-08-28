@@ -1,14 +1,27 @@
 module RubyZero::Core
     module DataTypes
         class DType
+            # @return [String]
             def to_s
                 self.class.name
             end
-            def ==(other)
-                self.class == other.class
-            end
+            # @return [Tensor]
             def self.[](*args)
                 data = self.get_dtype_on_device(Device.new(:numo)).[](*args)
+                t = Tensor.new(data, dtype:self)
+                return t
+            end
+            # @param [Shape] shape
+            # @return [Tensor]
+            def zeros(shape)
+                data = self.get_dtype_on_device(Device.new(:numo)).zeros(shape.to_a)
+                t = Tensor.new(data, dtype:self)
+                return t
+            end
+            # @param [Shape] shape
+            # @return [Tensor]
+            def ones(shape)
+                data = self.get_dtype_on_device(Device.new(:numo)).ones(shape.to_a)
                 t = Tensor.new(data, dtype:self)
                 return t
             end
@@ -78,7 +91,7 @@ module RubyZero::Core
         class Complex128 < DType
         end
 
-        def from_numo_dtype(dtype)
+        def self.from_numo_dtype(dtype)
             case dtype
             when Numo::Bit
                 Boolean

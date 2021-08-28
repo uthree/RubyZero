@@ -8,10 +8,10 @@ RubyZero module
 		Device class (wrapping Numo/Cumo and other libraries...?)
         Shape class
         Axis class
+    	Functions module
+            Activation functions
 	NN module
         model class
-		Functions module
-            Activation functions
         Functional module
             (likes Torch.nn.functional)
         Layers module
