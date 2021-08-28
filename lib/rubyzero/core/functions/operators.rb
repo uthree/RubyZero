@@ -87,18 +87,7 @@ module RubyZero::Core::Functions
                     dy * @input[0] ** @input[1] * F.log(@input[0])]
         end
     end
-    class Log < Function
-        # Take the logarithm of a tensor
-        # @param [Tensor] x
-        def forward(x)
-            calculator = x.device.calculator
-            data = calculator::NMath.log(x.data)
-            return Tensor.new(data)
-        end
-        def backward(dy)
-            return [dy / @input[0]]
-        end
-    end
+
 end
 
 # Apply a operator functions to a Tensor class

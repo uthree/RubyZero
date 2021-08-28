@@ -63,6 +63,9 @@ module RubyZero::Core
         # @param [Datatypes::DType] dtype
         def cast_to(dtype)
             @data = dtype.get_dtype_on_device(@device).cast(@data)
+            if @grad_tensor and @grad_tensor.dtype != dtype and @grad_tensor != self
+                @grad_tensor.cast_to(dtype)
+            end
             nil
         end
 

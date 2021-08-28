@@ -23,4 +23,10 @@ module RubyZero::Core::Functional
     def tan(x)
         return Functions::Tan.new().call(x)
     end
+    # Exponential function (y = e^x)
+    # @param [Tensor] x
+    # @return [Tensor]
+    def exp(x)
+        return Functions::Exp.new().call(x)
+    end
 end
