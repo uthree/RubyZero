@@ -92,34 +92,33 @@ module RubyZero::Core
         end
 
         def self.from_numo_dtype(dtype)
-            case dtype
-            when Numo::Bit
+            if dtype == Numo::Bit
                 Boolean
-            when Numo::Int8
+            elsif dtype == Numo::Int8
                 Int8
-            when Numo::Int16
+            elsif dtype == Numo::Int16
                 Int16
-            when Numo::Int32
+            elsif dtype == Numo::Int32
                 Int32
-            when Numo::Int64
+            elsif dtype == Numo::Int64
                 Int64
-            when Numo::UInt8
+            elsif dtype == Numo::UInt8
                 UInt8
-            when Numo::UInt16
+            elsif dtype == Numo::UInt16
                 UInt16
-            when Numo::UInt32
+            elsif dtype == Numo::UInt32
                 UInt32
-            when Numo::UInt64
+            elsif dtype == Numo::UInt64
                 UInt64
-            when Numo::SFloat
+            elsif dtype == Numo::SFloat
                 Float32
-            when Numo::DFloat
+            elsif dtype == Numo::DFloat
                 Float64
-            when Numo::RObject
+            elsif dtype == Numo::RObject
                 RObject
-            when Numo::SComplex
+            elsif dtype == Numo::SComplex
                 Complex64
-            when Numo::DComplex
+            elsif dtype == Numo::DComplex
                 Complex128
             end
         end

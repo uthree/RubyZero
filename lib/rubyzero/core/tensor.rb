@@ -20,29 +20,33 @@ module RubyZero::Core
                     else
                         predicted_type = DataTypes::RObject
                     end
-                    dtype ||= predicted_type
+                    @dtype ||= predicted_type
                 elsif data.is_a?(Numo::NArray)
-                    dtype ||= DataTypes.from_numo_dtype(data.class)
+                    @dtype ||= DataTypes::from_numo_dtype(data.class)
+                elsif data.is_a>(Tensor)
+                    return new(data.data, shape: data.shape, dtype: data.dtype)
                 else
                     raise TypeError, "data must be Array or Numo::NArray"
                 end
-
                 @device = device
                 @data = data
                 @shape = Shape.new(*data.shape)
-                @dtype = dtype
-
-                @grad_function = Functions::Constant.new.call(self)
-                @grad_tensor = nil
-                @requires_grad = false
+                @dtype ||= DataTypes::from_numo_dtype(data.class)
             else
                 @device = device
                 @shape = shape
-                @dtype = dtype
-                p "DTYPE IS"
-                p @dtype.get_dtype_on_device(@device)
+                @dtype ||= DataTypes::RObject
                 @data = @dtype.get_dtype_on_device(@device).zeros(*@shape.to_a)
             end
+            @grad_function = nil
+            @grad_tensor = nil
+            @requires_grad = true
+            return Functions::Constant.new.call(self)
+        end
+        # @retrun [String]
+        def inspect
+            numo_inspect = @data.inspect.split("\n")[1..nil].join("\n")
+            return "#{dtype}#shape=#{shape.to_a}\n#{numo_inspect}\ngrad_function=#{@grad_function.class}"
         end
 
         # @param [Datatypes::DType] dtype
