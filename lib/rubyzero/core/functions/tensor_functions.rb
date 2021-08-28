@@ -56,6 +56,25 @@ module RubyZero::Core::Functions
             return Transpose.new(*rev).call(dy)
         end
     end
+
+    class ReShape < Function
+        # @param [Array<Integer>|Shape] args
+        def initialize(*args)
+            if args.length == 1 and args[0].is_a?(Shape)
+                @dist_shape = args[0].to_a
+            else
+                @dist_shape = args
+            end
+        end
+        def forward(x)
+            @input_shape = x.shape
+            data = x.data.reshape(*@dist_shape)
+            return Tensor.new(data, device: x.device)
+        end
+        def backward(dy)
+            return ReShape.new(@input_shape).call(dy)
+        end
+    end
 end
 
 # Apply a function to tensor class.
