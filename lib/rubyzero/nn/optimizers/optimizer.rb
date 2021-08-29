@@ -6,7 +6,7 @@ module RubyZero::NN::Optimizers
         end
         def zero_grad
             @parameters.each do |param|
-                param.value.grad_tensor = nil
+                param.value.init_grad_tensor
             end
         end
         def step

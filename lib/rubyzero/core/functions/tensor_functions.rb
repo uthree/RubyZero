@@ -144,7 +144,8 @@ module RubyZero::Core::Functions
         def backward(dy)
             x1 = @input[0]
             x2 = @input[1]
-            return [F.matmul(dy, x2.transpose()), F.matmul(x1.transpose(), dy)]
+            dx1, dx2 = dy.dot(x2.transpose(1,0)), x1.transpose(1,0).dot(dy)
+            return [dx1, dx2]
         end
     end
 

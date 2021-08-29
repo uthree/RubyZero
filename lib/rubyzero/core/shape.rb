@@ -104,7 +104,7 @@ module RubyZero::Core
         # @return [Tensor]
         def apply_shape(shape)
             # TODO: check shape
-            @shape = shape
+            #@shape = shape
         end
     end
 end

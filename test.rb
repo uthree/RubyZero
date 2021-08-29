@@ -21,11 +21,10 @@ class MLP < NN::Model
         @affine1 = L::Affine.new(2, mid_units)
         @relu1 = L::ReLU.new
         @affine2 = L::Affine.new(mid_units, 1)
+        @direct = L::Affine.new(2, 1)
     end
     def forward(x)
-        x = @affine1.call(x)
-        x = @relu1.call(x)
-        x = @affine2.call(x)
+        x = @direct.call(x)
         return x
     end
 end
@@ -33,11 +32,12 @@ end
 model = MLP.new(10)
 optimizer = NN::Optimizers::SGD.new(model.parameters, lr: 0.1)
 criterion = NN::Losses::MSELoss.new
-10.times do |i|
+2.times do |i|
+    p "START LOOP #{i}"
     optimizer.zero_grad
     output = model.call(input_data)
     loss = criterion.call(output, target_data)
     loss.backward
     optimizer.step
-    puts "loss: #{loss.data}"
+    puts "#{i} loss: #{loss.data[0]}"
 end

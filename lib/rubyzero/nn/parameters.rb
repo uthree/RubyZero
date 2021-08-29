@@ -1,6 +1,7 @@
 module RubyZero::NN
     class Parameter
-        attr_reader :parent, :value
+        attr_accessor :value
+        attr_reader :parent
         # Initialize parameter
         # @param [Tensor] tensor
         def initialize(tensor)

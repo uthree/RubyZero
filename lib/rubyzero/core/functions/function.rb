@@ -9,6 +9,7 @@ module RubyZero::Core::Functions
             @input = args
             @output = forward(*args)
             if @input.any?{ |x| x.requires_grad }
+                p "ADDED GRADFN #{self.class.name}"
                 @output.grad_function = self
                 @output.requires_grad = true
             end

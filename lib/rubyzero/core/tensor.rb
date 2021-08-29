@@ -59,19 +59,31 @@ module RubyZero::Core
             @requires_grad = false
             return Functions::Constant.new.call(self)
         end
+
+        def init_grad_tensor
+            @grad_tensor = nil
+        end
+
+        def shape
+            old = @shape
+            @shape = Shape.new(*self.data.shape.to_a)
+            apply_shape old
+            @shape
+        end
         # Execute gradient function.
         # @return [RubyZero::Core::Tensor]
         def backward()
-            @grad_tensor = ones_like()
-            
+            p "BACKWARD #{@grad_function.class}"
+            @grad_tensor ||= ones_like()
             if @grad_function
                 grad_result = @grad_function.backward(@grad_tensor)
                 self.grad_function.input.each_with_index do |t, i|
                     if t.requires_grad
+                        p "BW GR IN ITER"
+
                         gi = grad_result[i]
-                        if gi.shape.to_a != t.shape.to_a
-                            raise Core::Exceptions::ShapeMissmatchError, "Function #{grad_function}\'s  index=#{i} shape missmatch. backward: #{gi.shape.inspect}, input: #{t.shape.inspect}." 
-                        end
+                        p gi
+                        raise "wuat" unless gi
                         t.add_grad gi
                         t.backward()
                     end
@@ -84,12 +96,12 @@ module RubyZero::Core
         # @param [RubyZero::Core::Tensor] grad_t
         # @return [RubyZero::Core::Tensor]
         def add_grad(grad_t)
+            p "CALLED ADDGRAD"
             if @grad_tensor
                 @grad_tensor += grad_t
             else
                 @grad_tensor = grad_t
             end
-            nil
         end
 
         # @retrun [String]
