@@ -18,13 +18,14 @@ module RubyZero::Core
         def self.bloadcast_to_same(x1, x2)
             x1 = Tensor.new(x1) unless x1.kind_of? Tensor
             x2 = Tensor.new(x2) unless x2.kind_of? Tensor
-            p x1.shape, x2.shape
 
             if x1.ndim < x2.ndim
                 x1.bloadcast_to(x2)
+                x1.cast_to!(x2.dtype)
             end
             if x2.ndim < x1.ndim
                 x2.bloadcast_to(x1)
+                x2.cast_to!(x1.dtype)
             end
             return x1, x2
         end

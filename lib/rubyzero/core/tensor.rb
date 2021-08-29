@@ -158,6 +158,49 @@ module RubyZero::Core
             return t
         end
 
+        # Initialize tensor randomly.
+        # @param [Shape|Array<Integer>] shape
+        # @return [RubyZero::Core::Tensor]
+        def self.rand(shape, dtype, device:Device.new(:numo))
+            if shape[0].is_a?(Shape)
+                shape = shape[0].to_a
+            end
+            data = dtype.get_dtype_on_device(device).rand(*shape)
+            t = new(data, shape: shape, dtype: dtype, device: device)
+            return t
+        end
+
+        # Initialize tensor with other tensor's shape, dtype, and device. witch data is random.
+        # @param [RubyZero::Core::Tensor] other
+        # @return [RubyZero::Core::Tensor]
+        def self.rand_like(other)
+            shape, dtype, device = other.shape, other.dtype, other.device
+            data = dtype.get_dtype_on_device(device).rand(*shape)
+            t = new(data, shape: shape, dtype: dtype, device: device)
+            return t
+        end
+
+        # Initialize tensor normal random value.
+        # @param [Shape|Array<Integer>] shape
+        # @return [RubyZero::Core::Tensor]
+        def self.rand_norm(shape, dtype, device:Device.new(:numo))
+            if shape[0].is_a?(Shape)
+                shape = shape[0].to_a
+            end
+            data = dtype.get_dtype_on_device(device).rand_norm(*shape)
+            t = new(data, shape: shape, dtype: dtype, device: device)
+            return t
+        end
+
+        # Initialize tensor with other tensor's shape, dtype, and device. witch data is random normal value.
+        # @param [RubyZero::Core::Tensor] other
+        # @return [RubyZero::Core::Tensor]
+        def self.rand_norm_like(other)
+            shape, dtype, device = other.shape, other.dtype, other.device
+            data = dtype.get_dtype_on_device(device).rand_norm(*shape)
+            t = new(data, shape: shape, dtype: dtype, device: device)
+            return t
+        end
         
         # Initialize tensor with same shape, same dtype, and same device. witch data is zeros.
         # @return [RubyZero::Core::Tensor]

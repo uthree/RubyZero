@@ -207,7 +207,7 @@ module RubyZero::Core
         end
 
         # calculate matrix multiplication ( also called dot product )
-        def matmul(other)
+        def dot(other)
             return F.matmul(self, other)
         end
     end

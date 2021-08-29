@@ -90,6 +90,10 @@ module RubyZero::Core
         def swap_axes(axis1, axis2)
             return dup.swap_axes!(axis1, axis2)
         end
+
+        def inspect
+            return "RubyZero::Core::Shape(#{to_a.join(', ')})"
+        end
     end
 end
 

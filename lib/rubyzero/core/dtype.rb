@@ -11,20 +11,49 @@ module RubyZero::Core
                 t = Tensor.new(data, dtype:self)
                 return t
             end
-            # @param [Shape] shape
+            # @param [Shape|Array<Integer>] shape
             # @return [Tensor]
-            def zeros(shape)
+            def self.zeros(*shape)
+                if shape[0].is_a?(Shape)
+                    shape = shape.to_a
+                end
                 data = self.get_dtype_on_device(Device.new(:numo)).zeros(shape.to_a)
                 t = Tensor.new(data, dtype:self)
                 return t
             end
-            # @param [Shape] shape
+            # @param [Shape|Array<Integer>] shape
             # @return [Tensor]
-            def ones(shape)
+            def self.ones(*shape)
+                if shape[0].is_a?(Shape)
+                    shape = shape.to_a
+                end
                 data = self.get_dtype_on_device(Device.new(:numo)).ones(shape.to_a)
                 t = Tensor.new(data, dtype:self)
                 return t
             end
+            # @param [Shape|Array<Integer>] shape
+            # @return [Tensor]
+            # Initialize tensor normal random value.
+            def self.rand_norm(*shape)
+                if shape[0].is_a?(Shape)
+                    shape = shape.to_a
+                end
+                data = self.get_dtype_on_device(Device.new(:numo)).new(shape.to_a).rand_norm()
+                t = Tensor.new(data, dtype:self)
+                return t
+            end
+            # Initialize tensor with other tensor's shape, dtype, and device. witch data is random normal value.
+            # @param [Shape|Array<Integer>] shape
+            # @return [Tensor]
+            def self.rand(*shape)
+                if shape[0].is_a?(Shape)
+                    shape = shape.to_a
+                end
+                data = self.get_dtype_on_device(Device.new(:numo)).new(shape.to_a).rand(shape.to_a)
+                t = Tensor.new(data, dtype:self)
+                return t
+            end
+
             # @param [Device] device
             # @return [Class]
             def self.get_dtype_on_device(device)
@@ -121,6 +150,25 @@ module RubyZero::Core
             elsif dtype == Numo::DComplex
                 Complex128
             end
+        end
+        PRIORITY = [
+            Boolean,
+            UInt8,
+            UInt16,
+            UInt32,
+            UInt64,
+            Int8,
+            Int16,
+            Int32,
+            Int64,
+            Float32,
+            Float64,
+            Complex64,
+            Complex128,
+            RObject
+        ]
+        def self.get_priority(dtype)
+            return PRIORITY.index(dtype)
         end
     end
 end
