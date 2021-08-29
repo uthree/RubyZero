@@ -8,7 +8,7 @@ module RubyZero::Core::Functional
     # @param [Tensor] x
     # @return [Tensor]
     def self.relu(x)
-        Core::Functions::Relu.new.call(x)
+        Core::Functions::ReLU.new.call(x)
     end
 
     def self.softmax(x, axis: nil)

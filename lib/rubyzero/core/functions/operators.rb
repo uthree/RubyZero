@@ -122,6 +122,53 @@ module RubyZero::Core
             _, other = Tensor.bloadcast_to_same(self, other)
             RubyZero::Core::Functions::Negative.new.call(self)
         end
+        # @param [Tensor] other
+        # @return [Tensor]
+        def **(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
+            RubyZero::Core::Functions::Pow.new.call(self, other)
+        end
+
+        # @param [Tensor] other
+        # @return [Tensor]
+        def <(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
+            bits = self.data < other.data
+            r = Tensor.new(bits)
+            return r
+        end
+        # @param [Tensor] other
+        # @return [Tensor]
+        def >(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
+            bits = self.data > other.data
+            r = Tensor.new(bits)
+            return r
+        end
+        # @param [Tensor] other
+        # @return [Tensor]
+        def <=(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
+            bits = self.data <= other.data
+            r = Tensor.new(bits)
+            return r
+        end
+        # @param [Tensor] other
+        # @return [Tensor]
+        def >=(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
+            bits = self.data >= other.data
+            r = Tensor.new(bits)
+            return r
+        end
+        # @param [Tensor] other
+        # @return [Tensor]
+        def ==(other)
+            _, other = Tensor.bloadcast_to_same(self, other)
+            bits = self.data == other.data
+            r = Tensor.new(bits)
+            return r
+        end
 
         def coerce(other)
             return [Tensor.new(other), self]

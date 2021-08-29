@@ -1,7 +1,6 @@
 module RubyZero::NN::Layers
     # Affine Layer
     # This layer is calculates the affine transformation of the input
-    # y = wx + b
     class Affine < Layer
         def initialize(input_size, output_size, bias: true)
             super

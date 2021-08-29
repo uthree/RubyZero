@@ -63,9 +63,19 @@ module RubyZero::Core
         # @return [RubyZero::Core::Tensor]
         def backward()
             @grad_tensor = ones_like()
-            if self.requires_grad and @grad_function
+            
+            if @grad_function
                 grad_result = @grad_function.backward(@grad_tensor)
-                self.grad_function.input.each_with_index {|t, i| t.add_grad grad_result[i] }
+                self.grad_function.input.each_with_index do |t, i|
+                    if t.requires_grad
+                        gi = grad_result[i]
+                        if gi.shape.to_a != t.shape.to_a
+                            raise Core::Exceptions::ShapeMissmatchError, "Function #{grad_function}\'s  index=#{i} shape missmatch. backward: #{gi.shape.inspect}, input: #{t.shape.inspect}." 
+                        end
+                        t.add_grad gi
+                        t.backward()
+                    end
+                end
             end
             return self
         end
@@ -79,6 +89,7 @@ module RubyZero::Core
             else
                 @grad_tensor = grad_t
             end
+            nil
         end
 
         # @retrun [String]

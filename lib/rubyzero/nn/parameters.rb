@@ -41,7 +41,7 @@ module RubyZero::NN
         end
         def each(&block)
             @parameters.each do |parameter|
-                block.call(parameter.value)
+                block.call(parameter)
             end
         end
         def elements

@@ -8,8 +8,9 @@ module RubyZero::Core::Functions
         def call(*args)
             @input = args
             @output = forward(*args)
-            if @output.requires_grad
+            if @input.any?{ |x| x.requires_grad }
                 @output.grad_function = self
+                @output.requires_grad = true
             end
             return @output
         end

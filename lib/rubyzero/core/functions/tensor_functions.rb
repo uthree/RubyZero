@@ -23,13 +23,26 @@ module RubyZero::Core::Functions
         # @param [Tensor] x
         # @return [Tensor]
         def forward(x)
-            calculator = x.device.calculator
             data = x.data.sum(axis: 0)
             return Tensor.new(data, device: x.device)
         end
         # @param [Tensor] dy
         def backward(dy)
-            return [RepeatZeroAxis.new(dy.data.shape.to_a[0]).call(dy)]
+            return [RepeatZeroAxis.new(@input[0].shape.to_a[0]).call(dy).reshape(@input[0].shape)]
+        end
+    end
+
+    class MeanZeroAxis < Function
+        # @param [Tensor] x
+        # @return [Tensor]
+        def forward(x)
+            data = x.data.mean(axis: 0)
+            @sum_x = x.data.sum(axis: 0)
+            return Tensor.new(data, device: x.device)
+        end
+        # @param [Tensor] dy
+        def backward(dy)
+            return [RepeatZeroAxis.new(@input[0].shape.to_a[0]).call(dy).reshape(@input[0].shape) / @sum_x]
         end
     end
 
@@ -60,7 +73,7 @@ module RubyZero::Core::Functions
     class Reshape < Function
         # @param [Array<Integer>|Shape] args
         def initialize(*args)
-            if args.length == 1 and args[0].is_a?(Shape)
+            if args.length == 1 and args[0].is_a?(Core::Shape)
                 @dist_shape = args[0].to_a
             else
                 @dist_shape = args
@@ -72,7 +85,7 @@ module RubyZero::Core::Functions
             return Tensor.new(data, device: x.device)
         end
         def backward(dy)
-            return [ReShape.new(@input_shape).call(dy)]
+            return [Reshape.new(@input_shape).call(dy)]
         end
     end
 
@@ -134,6 +147,49 @@ module RubyZero::Core::Functions
             return [F.matmul(dy, x2.transpose()), F.matmul(x1.transpose(), dy)]
         end
     end
+
+    class Slice < Function
+        # Slice a tensor
+        # @param [Array<Integer>] args
+        def initialize(*args)
+            @args = args
+        end
+        # @param [Tensor] x
+        def forward(x)
+            args = @args.to_a # convert to Array<Integer>
+            data = x.data.[](*args)
+            return Tensor.new(data, device: x.device)
+        end
+        def backward(dy)
+            args = @args.to_a # convert to Array<Integer>
+            zeros = Tensor.zeros_like(@input[0])
+            zeros[*args] = dy
+            return [zeros]
+        end
+    end
+
+    class AssignSlice < Function
+        # Assign a slice of a tensor
+        # @param [Array<Integer>] args
+        def initialize(*args)
+            @args = args
+        end
+        # x1[args] = x2
+        # @param [Tensor] x1
+        # @param [Tensor] x2
+        def forward(x1, x2)
+            args = @args.to_a # convert to Array<Integer>
+            x1.data[*args] = x2.data
+            return Tensor.new(x1.data, device: x1.device)
+        end
+        def backward(dy)
+            args = @args.to_a # convert to Array<Integer>
+            dx1 = Tensor.zeros_like(@input[0])
+            dx1[*args] = dy
+            dx2 = Tensor.zeros_like(@input[1])
+            return [dx1, dx2]
+        end
+    end
 end
 
 # Apply a function to tensor class.
@@ -163,6 +219,12 @@ module RubyZero::Core
         def sum(axis: 0)
             sza = Functions::SumZeroAxis.new().call(self)
             transposed = sza.swap_axes(0, axis)
+            return transposed
+        end
+
+        def mean(axis: 0)
+            mza = Functions::MeanZeroAxis.new().call(self)
+            transposed = mza.swap_axes(0, axis)
             return transposed
         end
 
@@ -209,6 +271,19 @@ module RubyZero::Core
         # calculate matrix multiplication ( also called dot product )
         def dot(other)
             return F.matmul(self, other)
+        end
+
+        # Slice tensor
+        # @param [Array<Integer>] args
+        # @return [Tensor]
+        def [](*args)
+            return Functions::Slice.new(*args).call(self)
+        end
+        # Assign a slice of a tensor
+        # @param [Array<Integer>] args
+        # @param [Tensor] value
+        def []=(*args, value)
+            return Functions::AssignSlice.new(*args).call(self, value)
         end
     end
 end
