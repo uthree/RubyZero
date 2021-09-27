@@ -1,4 +1,5 @@
 module RubyZero::Core
+    # Tensor class
     class Tensor
         attr_accessor :data, :grad_fn, :grad, :device
         def initialize(data, dtype: nil, device: nil)
@@ -27,16 +28,23 @@ module RubyZero::Core
             end
             @dtype = DataTypes.from_xmo_dtype(@data.class)
         end
+        # get data type
+        # @return [DataTypes::DataType]
         def dtype
             @dtype
         end
+        # get shape
+        # @return [Array<Integer>]
         def shape
             @data.shape
         end
+        # get tensor summary
+        # @return [String]
         def inspect
             numo_inspect = @data.inspect.split("\n")[1..nil].join("\n")
-            return "#{dtype}#shape=#{shape.to_a}\n#{numo_inspect}\ngrad_function=#{@grad_fn.class}"
+            return "#{dtype}#shape=#{shape.to_a}\n#{numo_inspect}\ngrad_fn=#{@grad_fn.class}"
         end
+        # @return [Boolean]
         def requires_grad?
             @requires_grad
         end

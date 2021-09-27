@@ -1,6 +1,7 @@
 require_relative '../exceptions.rb'
 
 module RubyZero::Core::Functions
+    # Function class
     class Function
         attr_reader :inputs, :output
         def initialize(*args, **kwargs, &block)
@@ -19,6 +20,9 @@ module RubyZero::Core::Functions
                 @output.grad_fn = self
             end
             return @output
+        end
+        def inspect
+            return "#<#{self.class}>"
         end
     end
 end

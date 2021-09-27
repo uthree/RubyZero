@@ -8,3 +8,10 @@ module RubyZero
     class NN
         class Model
         module Layers
+            Affine/Linear
+            Embedding
+            Convolutions
+            ConvTranspose
+            Attention
+            RNN/LSTM/GRU
+            
