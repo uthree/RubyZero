@@ -1,9 +1,8 @@
 module RubyZero::Core
     class Tensor
         def backward()
-            @grad ||= ones_like
             return unless @grad_fn
-            dx = @grad_fn.backward(self)
+            dx = @grad_fn.backward(ones_like)
             self.grad_fn.inputs.each_with_index do |input, i|
                 if input.grad 
                     input.grad += dx[i]
