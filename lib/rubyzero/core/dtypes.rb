@@ -109,3 +109,7 @@ module RubyZero::Core
         end
     end
 end
+
+module RubyZero
+    include Core::DataTypes
+end

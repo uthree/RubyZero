@@ -1,4 +1,3 @@
 require_relative './lib/rubyzero.rb'
 
-t = RubyZero::Core::DataTypes::Float32
-p t
+p RubyZero::Float32.zeros([1,3])
