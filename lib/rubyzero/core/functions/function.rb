@@ -2,6 +2,7 @@ require_relative '../exceptions.rb'
 
 module RubyZero::Core::Functions
     class Function
+        attr_reader :inputs, :output
         def initialize(*args, **kwargs, &block)
             
         end

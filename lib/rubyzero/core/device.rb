@@ -10,6 +10,11 @@ module RubyZero::Core
                 raise RubyZero::Core::Exceptions::DeviceNotSupported, "Device #{identifier} is not supported."
             end
         end
+        def xmo
+            if @identifier == :cpu
+                return Numo
+            end
+        end
     end
 end
 
