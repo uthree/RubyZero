@@ -5,3 +5,4 @@ module RubyZero::NN
 end
 
 require_relative './layer.rb'
+require_relative './affine.rb'
