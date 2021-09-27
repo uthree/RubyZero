@@ -1,29 +1,10 @@
-RubyZero module
-	Core module
-		Tensor class
-		Matrix class
-		Vector class
-        Datatypes module
-		    DType class
-		Device class (wrapping Numo/Cumo and other libraries...?)
-        Shape class
-        Axis class
-    	Functions module
-            Activation functions
-        Functional module
-            (likes Torch.nn.functional)
-	NN module
-        model class
-
-        Layers module
-            (likes Torch.nn)
-            Linear class
-            Conv2d class
-            etc...
-        Optimizers module
-            SGD class
-            Momentum class
-            etc...
-        Losses module
-            MSELoss class
-            etc...
+module RubyZero
+    module Core
+        class Tensor
+        class Function
+        class Device
+        module Functions
+        module Functional
+    class NN
+        class Model
+        module Layers

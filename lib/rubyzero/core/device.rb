@@ -1,11 +1,27 @@
 module RubyZero::Core
     class Device
-        attr_reader :id, :calculator
-        def initialize(id = :numo)
-            if id == :numo or id == :cpu
-                @id = :numo
-                @calculator = Numo
+        attr_reader :caluculator, :identifier
+        def initialize(identifier)
+            sym = identifier.to_sym
+            if sym == :cpu
+                @caluculator = Numo
+                @identifier = sym
+            else
+                raise RubyZero::Core::Exceptions::DeviceNotSupported, "Device #{identifier} is not supported."
             end
+        end
+    end
+end
+
+module RubyZero
+    @@ident_device = {}
+    def self.device(identifier)
+        if @@ident_device[identifier]
+            return @@ident_device[identifier]
+        else
+            d = Core::Device.new(identifier)
+            @@ident_device[identifier] = d
+            return d
         end
     end
 end

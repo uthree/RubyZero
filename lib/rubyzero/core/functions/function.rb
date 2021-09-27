@@ -1,25 +1,20 @@
-# Function (base class)
-module RubyZero::Core::Functions
+require_relative '../exceptions.rb'
+
+module RubyZero::Functions
     class Function
-        attr_reader :input, :output
-        def initialize()
-            @input = nil
+        def initialize(*args, **kwargs, &block)
+            
+        end
+        def forward(*args, **kwargs, &block)
+            raise Execptions::NotImplementedError, "Function::forward() not implemented"
+        end
+        def backward(*args, **kwargs, &block)
+            raise Execptions::NotImplementedError, "Function::backward() not implemented"
         end
         def call(*args)
-            @input = args
+            @inputs = args
             @output = forward(*args)
-            if @input.any?{ |x| x.requires_grad }
-                p "ADDED GRADFN #{self.class.name}"
-                @output.grad_function = self
-                @output.requires_grad = true
-            end
             return @output
-        end
-        def forward()
-            raise NotImplementedError, "#{self.class}#forward not implemented."
-        end
-        def backward(dy)
-            raise NotImplementedError, "#{self.class}#backward not implemented."
         end
     end
 end
