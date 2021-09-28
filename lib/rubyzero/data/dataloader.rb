@@ -2,7 +2,6 @@ module RubyZero::Data
     class DataLoader
         def initialize(dataset, batch_size: 1, shuffle: false)
             @dataset = dataset
-            p  batch_size , dataset.size
             @batch_size = batch_size > dataset.size ? dataset.size : batch_size
             @shuffle = shuffle
         end

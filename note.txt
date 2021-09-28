@@ -14,7 +14,6 @@ module RubyZero
             ConvTranspose
             Attention
             RNN/LSTM/GRU
-        class Model
     module Data
         class Dataset
         class DataLoader
@@ -22,5 +21,9 @@ module RubyZero
             class XOR
             class MNIST
             class CIFAR10
-            
+    module Utils
+        class Trainer
+    module Text
+        class Tokenizer
+        class WordEmbedding < Embedding
             
