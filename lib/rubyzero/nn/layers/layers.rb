@@ -8,3 +8,5 @@ end
 require_relative './layer.rb'
 require_relative './affine.rb'
 require_relative './relu.rb'
+require_relative './modellist.rb'
+require_relative './mlp.rb'

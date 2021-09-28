@@ -1,12 +1,12 @@
 module RubyZero::Core
     # Tensor class
     class Tensor
-        attr_accessor :data, :grad_fn, :grad, :device
+        attr_accessor :data, :grad_fn, :grad, :device, :requires_grad
         def initialize(data, dtype: nil, device: nil)
             @device = device || RubyZero.device(:cpu)
             @grad_fn = nil
             @grad = nil
-            @requires_grad = true
+            @requires_grad = false
 
             # check data type
             if data.is_a?(Array)
@@ -47,6 +47,10 @@ module RubyZero::Core
         # @return [Boolean]
         def requires_grad?
             @requires_grad
+        end
+        # detach from graph
+        def detach
+            @grad_fn = nil
         end
     end
 end

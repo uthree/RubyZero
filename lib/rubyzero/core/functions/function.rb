@@ -16,8 +16,9 @@ module RubyZero::Core::Functions
         def call(*args)
             @inputs = args
             @output = forward(*args)
-            if @output.requires_grad?
+            if @inputs.any?{|t| t.requires_grad?}
                 @output.grad_fn = self
+                @output.requires_grad = true
             end
             return @output
         end

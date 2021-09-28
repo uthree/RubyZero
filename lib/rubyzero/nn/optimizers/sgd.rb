@@ -9,5 +9,6 @@ module RubyZero::NN::Optimizers
                 tensor.data -= tensor.grad.data * @lr
             end
         end
+        alias :step :update
     end
 end

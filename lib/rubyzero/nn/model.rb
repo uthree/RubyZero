@@ -16,6 +16,7 @@ module RubyZero::NN
             param_keys.each do |key|
                 obj = instance_variable_get(key)
                 if obj.is_a?(RubyZero::Core::Tensor)
+                    obj.requires_grad = true
                     params << obj
                 elsif obj.is_a?(RubyZero::NN::Parameters)
                     params += obj.elements
