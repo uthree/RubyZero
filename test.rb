@@ -1,4 +1,3 @@
-
 require_relative './lib/rubyzero.rb'
 
 dataset = RubyZero::Data::Presets::Xor.new

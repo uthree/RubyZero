@@ -7,49 +7,22 @@ This library likes [PyTorch](https://github.com/pytorch/pytorch) and [DeZero](ht
 ```ruby
 require_relative './lib/rubyzero.rb'
 
-include RubyZero
+dataset = RubyZero::Data::Presets::Xor.new
+dataloader = RubyZero::Data::DataLoader.new(dataset, batch_size: 4, shuffle: true)
+model = RubyZero::NN::Layers::MultiLayerPerceptron.new(2,100,1)
+criterion = RubyZero::NN::Losses::MSE.new
+optimizer = RubyZero::NN::Optimizers::SGD.new(model.parameters, lr: 0.00001)
 
-class MLP < NN::Model
-    def initialize(input_size, hidden_size, output_size)
-        @fc1 = NN::Layers::Affine.new(input_size, hidden_size)
-        @relu1 = NN::Layers::ReLU.new
-        @fc2 = NN::Layers::Affine.new(hidden_size, output_size)
+1000.times do |i|
+    dataloader.each do |inputs, targets|
+        optimizer.zero_grad
+        outputs = model.forward(inputs)
+        loss = criterion.forward(outputs, targets)
+        l = loss.data[0]
+        puts "Epoch #{i} | Loss: #{l}"
+        loss.backward
+        optimizer.step
     end
-    def forward(x)
-        x = @fc1.call(x)
-        x = @relu1.call(x)
-        x = @fc2.call(x)
-        return x
-    end
-end
-
-input_data = FloatTensor[
-    [1, 0],
-    [0, 1],
-    [1, 1],
-    [0, 0]
-]
-
-output_data = FloatTensor[
-    [1],
-    [1],
-    [0],
-    [0]
-]
-
-model = MLP.new(2, 5, 1)
-criterion = NN::Losses::MSE.new
-optimizer = NN::Optimizers::SGD.new(model.parameters, lr: 0.01)
-
-
-100.times do |epoch|
-    optimizer.zero_grad
-    output = model.forward(input_data)
-    loss = criterion.forward(output, output_data)
-    loss.backward
-    l = loss.data[0]
-    puts "epoch #{epoch} | Loss : #{l}"
-    optimizer.update
 end
 ```
 

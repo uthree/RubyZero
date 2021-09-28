@@ -9,4 +9,5 @@ module RubyZero::NN::Losses
             return err
         end
     end
+    MeanSquaredError = MSE
 end
