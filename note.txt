@@ -5,7 +5,7 @@ module RubyZero
         class Device
         module Functions
         module Functional
-    class NN
+    module NN
         class Model
         module Layers
             Affine/Linear
@@ -14,4 +14,13 @@ module RubyZero
             ConvTranspose
             Attention
             RNN/LSTM/GRU
+        class Model
+    module Data
+        class Dataset
+        class DataLoader
+        module Presets
+            class XOR
+            class MNIST
+            class CIFAR10
+            
             
