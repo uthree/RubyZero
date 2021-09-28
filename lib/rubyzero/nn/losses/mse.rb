@@ -4,7 +4,7 @@ module RubyZero::NN::Losses
             err = input - target
             err = err * err
             while err.shape.size > 1
-                err = err.sum(axis:0)
+                err = err.mean(axis:0)
             end
             return err
         end

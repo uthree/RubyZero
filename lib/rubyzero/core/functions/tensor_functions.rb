@@ -58,6 +58,22 @@ module RubyZero::Core::Functions
             return new_t
         end
         def backward(dy)
+            return [dy.repeat(@repeats, axis: @axis) / @repeats]
+        end
+    end
+
+    class Mean < Function
+        def initialize(axis)
+            @axis = axis
+        end
+        def forward(x1)
+            @repeats = x1.shape[@axis]
+            arr = x1.data
+            arr = arr.mean(axis: @axis)
+            new_t = RubyZero::Core::Tensor.new(arr, device: x1.device)
+            return new_t
+        end
+        def backward(dy)
             return [dy.repeat(@repeats, axis: @axis)]
         end
     end
@@ -92,6 +108,9 @@ module RubyZero::Core
         end
         def sum(axis: 0)
             return RubyZero::Core::Functions::Sum.new(axis).call(self)
+        end
+        def mean(axis: 0)
+            return RubyZero::Core::Functions::Mean.new(axis).call(self)
         end
         def dot(other)
             if other.is_a?(RubyZero::Core::Tensor)

@@ -1,1 +1,1 @@
-gem "numo/narray"
+gem "numo-narray"
