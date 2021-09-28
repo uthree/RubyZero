@@ -20,5 +20,8 @@ module RubyZero::Core
                 RubyZero::Core::Functions::Div.new().call(self, other)
             end
         end
+        def -@
+            RubyZero::Core::Functions::Neg.new().call(self)
+        end
     end
 end

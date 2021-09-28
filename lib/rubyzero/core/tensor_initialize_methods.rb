@@ -64,3 +64,10 @@ module RubyZero::Core
         end
     end
 end
+
+module RubyZero
+    FloatTensor = RubyZero::Core::DataTypes::Float32
+    DoubleTensor = RubyZero::Core::DataTypes::Float64
+    IntTensor = RubyZero::Core::DataTypes::Int32
+    LongTensor = RubyZero::Core::DataTypes::Int64
+end

@@ -72,7 +72,8 @@ module RubyZero::Core::Functions
         end
         def backward(dy)
             x1, x2 = @inputs
-            return [dy.dot(x2), dy.dot(x1)]
+            dx, dy = [dy.dot(x2.swapaxes(0,1)), x1.swapaxes(0,1).dot(dy)]
+            return dx, dy
         end
     end
 end

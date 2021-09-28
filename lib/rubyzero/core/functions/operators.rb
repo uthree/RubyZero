@@ -1,4 +1,15 @@
 module RubyZero::Core::Functions
+    class Neg < Function
+        def forward(x1)
+            new_arr = -(x1.data)
+            new_t = RubyZero::Core::Tensor.new(new_arr)
+            return new_t
+        end
+        def backward(dy)
+            return [-dy]
+        end
+    end
+
     class Add < Function
         def forward(x1, x2)
             new_arr = x1.data + x2.data

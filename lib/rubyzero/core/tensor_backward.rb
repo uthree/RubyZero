@@ -2,7 +2,6 @@ module RubyZero::Core
     class Tensor
         def backward()
             return unless @grad_fn
-            p @grad_fn
 
             @grad ||= ones_like
             dx = @grad_fn.backward(@grad)
