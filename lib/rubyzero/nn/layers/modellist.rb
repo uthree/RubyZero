@@ -1,5 +1,6 @@
 module RubyZero::NN::Layers
     # The list of models that can be used in the neural network.
+    # This class supports to containing different Model classes.
     class ModelList < Layer
         def initialize(list=nil)
             if list
@@ -26,6 +27,14 @@ module RubyZero::NN::Layers
         end
         def each(&block)
             @models.each(&block)
+        end
+        def __get_str__(num_indents)
+            indents = "  " * num_indents
+            s = "#{indents}#{self.class.name} #{parameters.size} params\n"
+            @models.each do |child|
+                s += child.__get_str__(num_indents + 1)
+            end
+            return s
         end
     end
 end
