@@ -13,13 +13,13 @@ module RubyZero::Core
                 if dtype
                     @data = dtype.get_type_on_calculator(device)[*data]
                 else
-                    @data = device.caluculator::NArray[*data]
+                    @data = @device.caluculator::NArray[*data]
                 end
             elsif data.is_a?(Numeric)
                 if dtype
                     @data = dtype.get_type_on_calculator(device)[data]
                 else
-                    @data = device.caluculator::NArray[data]
+                    @data = @device.caluculator::NArray[data]
                 end
             elsif data.is_a?(Numo::NArray)
                 @data = data

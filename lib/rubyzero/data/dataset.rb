@@ -12,6 +12,8 @@ module RubyZero::Data
         def [](index)
             getitem(index)
         end
-        alias :size :length
+        def size
+            length()
+        end
     end
 end

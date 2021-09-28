@@ -46,7 +46,12 @@ module RubyZero::Core
 
         # initialize new tensor with given another tensor's shape which filled with random values.
         def rand_like()
-            Tensor.rand(self.shape, dtype:self.dtype, device:self.device)
+            Tensor.rand(self.shape, dtype: self.dtype, device:self.device)
+        end
+
+        def self.stack(tensors, axis:0)
+            t = Tensor.new(tensors.map{|t| t.data})
+            return t
         end
     end
 
