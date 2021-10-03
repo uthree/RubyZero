@@ -1,9 +1,9 @@
 module RubyZero::Utils
     class Trainer
-        def initialize(model, loss_function, optimizer)
+        def initialize(model, loss_function: nil, optimizer: nil)
             @model = model
-            @optimizer = optimizer
-            @loss_function = loss_function
+            @optimizer = optimizer || RubyZero::NN::Optimizers::Momentum.new(@model.parameters())
+            @loss_function = loss_function || RubyZero::NN::Losses::MSE.new()
         end
 
         def train(train_data, test_data, num_epochs:1, batch_size:1, shuffle:true, show_graph:false, show_graph_finish:true)
@@ -34,8 +34,8 @@ module RubyZero::Utils
                     clear_console()
                     plot = UnicodePlot.lineplot((0..epoch).to_a, losses_train, name:"train loss")
                     UnicodePlot.lineplot!(plot, (0..epoch).to_a, losses_test, name:"test loss")
-                    puts "train loss:#{avg_loss_train_b}, test loss:#{avg_loss_test_b}"
                     plot.render()
+                    puts "train loss:#{avg_loss_train_b}\n test loss:#{avg_loss_test_b}"
                 end
             end
             return losses_train[-1]

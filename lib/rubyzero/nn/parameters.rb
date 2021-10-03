@@ -17,5 +17,6 @@ module RubyZero::NN
             end
             return sz
         end
+        include Enumerable
     end
 end
