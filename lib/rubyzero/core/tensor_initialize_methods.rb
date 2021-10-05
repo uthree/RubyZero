@@ -10,7 +10,7 @@ module RubyZero::Core
 
         # initialize new tensor with given another tensor's shape which filled with zeros.
         def zeros_like()
-            Tensor.zeros(self.shapped_data, dtype:self.dtype, device:self.device)
+            Tensor.zeros(self.shape, dtype:self.dtype, device:self.device)
         end
 
         # initialize new tensor with given shape which filled with ones.

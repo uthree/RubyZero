@@ -25,7 +25,7 @@ module RubyZero::Core::Functions
             return new_t
         end
         def backward(dy)
-            return [dy.swap_axes(@axis1, @axis2)]
+            return [dy.swapaxes(@axis1, @axis2)]
         end
     end
     class Repeat < Function

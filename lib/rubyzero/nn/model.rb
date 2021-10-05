@@ -44,5 +44,19 @@ module RubyZero::NN
         def inspect
             return __get_str__(0)
         end
+        def train()
+            self.parameters.map do |param|
+                param.requires_grad = true
+            end
+            return self
+        end
+        def eval()
+            def train()
+                self.parameters.map do |param|
+                    param.requires_grad = false
+                end
+                return self
+            end
+        end
     end
 end

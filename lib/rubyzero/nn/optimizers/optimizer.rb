@@ -9,7 +9,7 @@ module RubyZero::NN::Optimizers
         end
         def zero_grad()
             @parameters.each do |parameter|
-                parameter.grad = nil
+                parameter.grad = parameter.zeros_like()
             end
         end
     end
