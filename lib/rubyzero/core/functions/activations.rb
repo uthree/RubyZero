@@ -9,4 +9,12 @@ module RubyZero::Core::Functions
             return [ @path_through * dy ]
         end
     end
+
+    class Sigmoid < Function
+        def forward(x)
+            nmath = x.device.caluculator::NMath
+        end
+        def backward(dy)
+        end
+    end
 end
