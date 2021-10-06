@@ -58,5 +58,18 @@ module RubyZero::NN
                 return self
             end
         end
+        def save(path)
+            self.parameters.map do |param|
+                param.grad = nil
+            end
+            File.open(path, "wb") do |f|
+                Marshal.dump(self, f)
+            end
+        end
+        def self.load(path)
+            File.open(path, "rb") do |f|
+                return Marshal.load(f)
+            end
+        end
     end
 end
