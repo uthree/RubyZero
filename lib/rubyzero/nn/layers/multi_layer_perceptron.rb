@@ -1,6 +1,8 @@
 module RubyZero::NN::Layers
     class MultiLayerPerceptron < ModelStack
-        # @param [Array<Integer>] dims The dimensions of the input, hidden and output
+        # @option opts [Integer] :dims The dimensions of the input, hidden and output
+        # [5, 3] -> 5 inputs, 3 outputs
+        # [5, 3, 2] -> 5 inputs, 3 hidden, 2 outputs
         def initialize(*dims, activation: RubyZero::NN::Layers::ReLU)
             super()
             if dims.length < 2
