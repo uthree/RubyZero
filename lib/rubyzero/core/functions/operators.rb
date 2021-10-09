@@ -68,20 +68,6 @@ module RubyZero::Core::Functions
         end
     end
 
-    class Log < Function
-        def forward(x1)
-            nmath = x1.device.xmo::NMath
-            new_arr = nmath.log(x1.data)
-            new_t = RubyZero::Core::Tensor.new(new_arr, device: x1.device)
-            return new_t
-        end
-
-        def backward(dy)
-            x1 = @inputs[0]
-            return [dy / x1]
-        end
-    end
-
     class MulScalar < Function
         def initialize(scalar)
             @scalar = scalar

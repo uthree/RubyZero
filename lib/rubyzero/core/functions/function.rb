@@ -1,4 +1,5 @@
 require_relative '../exceptions.rb'
+require 'unicode_plot'
 
 module RubyZero::Core::Functions
     # Function class
@@ -24,6 +25,12 @@ module RubyZero::Core::Functions
         end
         def inspect
             return "#<#{self.class}>"
+        end
+        def self.plot(range: (-10..10).step(0.01))
+            inputs = range.to_a
+            outputs = inputs.map{|t| self.new().call(RubyZero::Core::Tensor.new(t)).data[0]}
+            plot = UnicodePlot.lineplot(inputs, outputs, name: self.name)
+            plot.render
         end
     end
 end
