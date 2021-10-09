@@ -11,6 +11,7 @@ require_relative './relu.rb'
 require_relative './modellist.rb'
 require_relative './modelstack.rb'
 require_relative './multi_layer_perceptron.rb'
+require_relative './embedding.rb'
 
 module RubyZero::NN
     module LayersInitializeAliases
@@ -31,6 +32,9 @@ module RubyZero::NN
         end
         def self.mlp(*args)
             RubyZero::NN::Layers::MultiLayerPerceptron.new(*args)
+        end
+        def embedding(*args)
+            RubyZero::NN::Layers::Embedding.new(*args)
         end
     end
 end
