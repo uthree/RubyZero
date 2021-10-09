@@ -13,8 +13,8 @@ module RubyZero::Core::Functions
     class Sigmoid < Function
         def forward(x)
             nmath = x.device.caluculator::NMath
-        end
-        def backward(dy)
+            data = 1.0 / (1.0 + nmath.exp(-x.data))
+            return RubyZero::Core::Tensor.new(data)
         end
     end
 end
