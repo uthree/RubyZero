@@ -4,7 +4,7 @@ require_relative "lib/rubyzero/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "rubyzero"
-  spec.version       = Rubyzero::VERSION
+  spec.version       = RubyZero::VERSION
   spec.authors       = ["uthree"]
   spec.email         = ["33905956+uthree@users.noreply.github.com"]
 
