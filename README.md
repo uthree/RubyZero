@@ -1,8 +1,17 @@
 # Rubyzero
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rubyzero`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Simple deep learning library for Ruby.
 
-TODO: Delete this and the text above, and describe your gem
+## Example
+```ruby
+require 'rubyzero'
+include RubyZero
+model = L.mlp(2,5,1) # 多層パーセプトロンモデルを初期化(入力2次元, 隠れ層5次元, 出力層1次元)
+data = RubyZero::Data::Presets::Xor.new() # XOR演算のデータセット
+trainer = Utils::Trainer.new(model) # 学習を勝手にしてくれるやつ
+trainer.train(data, data, num_epochs:100) # 学習を自動的にするメソッド
+p model # ついでにモデルの中身を表示
+```
 
 ## Installation
 
