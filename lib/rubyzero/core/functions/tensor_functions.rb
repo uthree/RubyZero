@@ -92,6 +92,42 @@ module RubyZero::Core::Functions
             return dx, dy
         end
     end
+
+    class Slice < Function
+        def initialize(idx)
+            @idx = idx
+        end
+        def forward(x1)
+            idx = @idx
+            arr = x1.data
+            arr = arr[idx]
+            new_t = RubyZero::Core::Tensor.new(arr, device: x1.device)
+            return new_t
+        end
+        def backward(dy)
+            t = @inputs[0].zeros_like
+            t[@idx] = dy
+            return [t]
+        end
+    end
+
+    class SliceAssign < Function
+        def initialize(idx)
+            @idx = idx
+        end
+        def forward(x1, x2)
+            idx = @idx
+            arr = x1.data
+            arr[idx] = x2.data
+            new_t = RubyZero::Core::Tensor.new(arr, device: x1.device)
+            return new_t
+        end
+        def backward(dy)
+            t = @inputs[0].zeros_like
+            t[@idx] = dy
+            return [t, dy]
+        end
+    end
 end
 
 # apply Tensor class
@@ -118,6 +154,12 @@ module RubyZero::Core
             else
                 return self*other
             end
+        end
+        def [](idx)
+            return RubyZero::Core::Functions::Slice.new(idx).call(self)
+        end
+        def []=(idx, value)
+            return RubyZero::Core::Functions::SliceAssign.new(idx).call(self, value)
         end
     end
 end

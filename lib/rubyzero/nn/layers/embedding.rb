@@ -1,7 +1,5 @@
 module RubyZero::NN::Layers
-    class Embedding < Affine
-        def initialize(vocab_size, hidden_dim)
-            super(vocab_size, hidden_dim, bias: false)
-        end
+    class Embedding
+        
     end
 end
