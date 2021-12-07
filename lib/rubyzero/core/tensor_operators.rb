@@ -23,5 +23,12 @@ module RubyZero::Core
         def -@
             RubyZero::Core::Functions::Neg.new().call(self)
         end
+        def **(other)
+            if other.is_a?(Numeric)
+                RubyZero::Core::Functions::PowScalar.new().call(self, other)
+            else
+                RubyZero::Core::Functions::Pow.new().call(self, other)
+            end
+        end
     end
 end

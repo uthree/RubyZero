@@ -68,6 +68,18 @@ module RubyZero::Core::Functions
         end
     end
 
+    class PowScalar < Function
+        def forward(x1, x2)
+            new_arr = x1.data ** x2
+            new_t = RubyZero::Core::Tensor.new(new_arr, device: x1.device)
+            return new_t
+        end
+        def backward(dy) 
+            x1, x2 = @inputs
+            return dy * x2 * x1 ** (x2 - 1), dy * x1 ** x2 * Log.new().call(x1)
+        end
+    end
+
     class MulScalar < Function
         def initialize(scalar)
             @scalar = scalar

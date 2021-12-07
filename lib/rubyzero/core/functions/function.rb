@@ -15,13 +15,14 @@ module RubyZero::Core::Functions
             raise Execptions::NotImplementedError, "#{self.class}#backward() not implemented"
         end
         def call(*args)
-            @inputs = args
-            @output = forward(*args)
+            @inputs = args unless @__without_save_inputs__
+            output = forward(*args)
             if @inputs.any?{|t| t.requires_grad?}
-                @output.grad_fn = self
-                @output.requires_grad = true
+                output.grad_fn = self
+                output.requires_grad = true
             end
-            return @output
+            @output = output unless @__without_save_output__
+            return output
         end
         def inspect
             return "#<#{self.class}>"

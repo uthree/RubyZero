@@ -12,6 +12,7 @@ require_relative './modellist.rb'
 require_relative './modelstack.rb'
 require_relative './multi_layer_perceptron.rb'
 require_relative './embedding.rb'
+require_relative './normalizations.rb'
 
 module RubyZero::NN
     module LayersInitializeAliases
@@ -33,8 +34,11 @@ module RubyZero::NN
         def self.mlp(*args)
             RubyZero::NN::Layers::MultiLayerPerceptron.new(*args)
         end
-        def embedding(*args)
+        def self.embedding(*args)
             RubyZero::NN::Layers::Embedding.new(*args)
+        end
+        def self.batch_normalization(*args)
+            RubyZero::NN::Layers::BatchNormalization.new(*args)
         end
     end
 end

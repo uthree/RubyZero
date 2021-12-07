@@ -12,6 +12,9 @@ module RubyZero::NN
         def self.exp(x)
             return RubyZero::Core::Functions::Exp.new().call(x)
         end
+        def self.sqrt(x)
+            return RubyZero::Core::Functions::SquareRoot.new().call(x)
+        end
     end
 end
 
